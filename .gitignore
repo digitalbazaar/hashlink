@@ -1,0 +1,10 @@
+*.log
+*.sw[op]
+*~
+.DS_Store
+.cproject
+.nyc_output
+.project
+.settings
+coverage
+node_modules
