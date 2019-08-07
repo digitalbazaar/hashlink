@@ -1,5 +1,5 @@
-# hashlinker ChangeLog
+# hashlink ChangeLog
 
-## 1.0.0 - 2019-xx-xx
-
-- Initial release
+## 0.1.0 - 2019-08-07
+- Add core files.
+- Add base requirements.
