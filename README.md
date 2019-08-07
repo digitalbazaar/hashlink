@@ -183,7 +183,7 @@ const {Hashlink} = require('hashlink');
 
 // setup hl library to use RDF Dataset Canonicalization
 const hl = new Hashlink();
-hl.use('rdc2015', jsonld.transforms.canonicalize);
+hl.use('urdna2015', jsonld.transforms.canonicalize);
 
 // create a hashlink using canonicalized data published at a URL
 const hlUrl = 'hl:zQmWvQxTqbG2Z9HPJgG57jjwR154cKhbtJenbyYTWkjgF3e:zuh8iaLobXC8g9tfma1CSTtYBakXeSTkHrYA5hmD4F7dCLw8XYwZ1GWyJ3zwF';
@@ -215,7 +215,7 @@ const {Hashlink} = require('hashlink');
 
 // setup hl library to use RDF Dataset Canonicalization
 const hl = new Hashlink();
-hl.use('rdc2015', jsonld.transforms.canonicalize);
+hl.use('urdna2015', jsonld.transforms.canonicalize);
 ```
 
 Note the use of the `Hashlink` class above as well as the `use()` API. Using
