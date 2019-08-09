@@ -21,6 +21,7 @@
     "util.js"
   ],
   "dependencies": {
+    "borc": "^2.1.1",
     "esm": "^3.2.22",
     "isomorphic-webcrypto": "^1.6.1"
   },
