@@ -14,14 +14,25 @@ describe('hashlink', function() {
     const testData = stringToUint8Array('Hello World!');
     const exampleUrl = 'https://example.com/hw.txt';
 
-    it('should create a hashlink (data + URL)', async function() {
+    it('should create a hashlink (data, default options)', async function() {
+      const result = await hl.create({
+        data: testData
+      });
+
+      console.log("HL:", result);
+      result.should.equal('hl:zQmWvQxTqbG2Z9HPJgG57jjwR154cKhbtJenbyYTWkjgF3e');
+    });
+
+    it('should create a hashlink (data + URL, default options)',
+      async function() {
       const result = await hl.create({
         data: testData,
         urls: [exampleUrl]
       });
 
       console.log("HL:", result);
-      result.should.be.a.string;
+      result.should.equal('hl:zQmWvQxTqbG2Z9HPJgG57jjwR154cKhbtJenbyYTWkjgF3e:z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy');
     });
+
   });
 });
