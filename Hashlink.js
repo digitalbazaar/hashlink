@@ -3,6 +3,7 @@
  */
 'use strict';
 
+const cbor = require('borc');
 import {TextDecoder, TransformStream, stringToUint8Array} from './util.js';
 
 export class Hashlink {
@@ -14,7 +15,7 @@ export class Hashlink {
    *   hyperlinks.
    */
   constructor() {
-    throw new Error('Not implemented.');
+    this.registeredTransforms = {};
   }
 
   /**
@@ -35,7 +36,58 @@ export class Hashlink {
    * @returns {Promise<string>} Resolves to a string that is a hashlink.
    */
   async create({data, urls, transforms, meta}) {
-    throw new Error('Not implemented.');
+    // ensure data or urls are provided
+    if(data === undefined && urls == undefined) {
+      throw new Error('Either `data` or `urls` must be provided.')
+    }
+
+    if(urls) {
+      // ensure urls are an array
+      if(Array.isArray(urls) === false) {
+        urls = [urls];
+      }
+
+      // ensure all URLs are strings
+      urls.forEach(url => {
+        if(typeof url !== 'string') {
+          throw new Error('Each `url` must be a string. Value: ' + url, url);
+        }
+      });
+    }
+
+    // merge meta options with urls
+    meta = Object.assign(meta, {'url': urls});
+
+    // generate the encoded cryptographic hash
+    const outputData = await transforms.reduce(async (transformedData, transform) => {
+      transformedData = await transformedData;
+      transformedData = await this.registeredTransforms[transform](
+        transformedData);
+      return transformedData;
+    }, data);
+
+    // generate the encoded metadata
+    const metadata = new Map();
+    if(meta.url) {
+      metadata.set(0x0f, meta.url);
+    }
+    if(meta['content-type']) {
+      metadata.set(0x0e, meta['content-type']);
+    }
+    if(meta.experimental) {
+      metadata.set(0x0d, meta.experimental);
+    }
+    let mhMeta = '';
+    if(metadata.size > 0) {
+      const baseEncodingTransform = transforms[transforms.length - 1];
+      const cborData = new Uint8Array(cbor.encode(metadata));
+      const mbCborData = new TextDecoder().decode(
+        this.registeredTransforms[baseEncodingTransform](cborData));
+
+      mhMeta = ':' + mbCborData;
+    }
+
+    return 'hl:' + new TextDecoder().decode(outputData) + mhMeta;
   }
 
   /**
@@ -77,7 +129,7 @@ export class Hashlink {
    *   data to output data.
    */
   use(algorithm, method) {
-    throw new Error('Not implemented.');
+    this.registeredTransforms[algorithm] = method;
   }
 
 }
