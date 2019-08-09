@@ -5,7 +5,7 @@
 
 import {TextDecoder, TransformStream, stringToUint8Array} from './util.js';
 
-export class Cipher {
+export class Hashlink {
   /**
    * Creates a new Hashlink instance that can be used to encode or decode
    * data at URLs.
@@ -23,8 +23,8 @@ export class Cipher {
    * is provided, the hashlink is created from the data.
    *
    * @param {Object} options - The options for the create operation.
-   * @param {Array} options.data - The data associated with the given URL. If
-   *   provided, this data is used to create the cryptographic hash.
+   * @param {Uint8Array} options.data - The data associated with the given URL.
+   *   If provided, this data is used to create the cryptographic hash.
    * @param {Array} options.urls - One or more URLs that contain the data
    *   referred to by the hashlink.
    * @param {Array} options.transforms - One or more URLs that contain the data
