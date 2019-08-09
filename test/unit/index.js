@@ -3,7 +3,8 @@
  */
 const chai = require('chai');
 const {Hashlink} = require('../../');
-import {stringToUint8Array} from '../../util.js';
+const hl = require('../../');
+const {stringToUint8Array} = require('../../util.js');
 
 chai.should();
 
@@ -16,11 +17,11 @@ describe('hashlink', function() {
     it('should create a hashlink (data + URL)', async function() {
       const result = await hl.create({
         data: testData,
-        url: exampleUrl
+        urls: [exampleUrl]
       });
 
       console.log("HL:", result);
       result.should.be.a.string;
     });
-
+  });
 });
