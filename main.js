@@ -10,13 +10,18 @@ export {
   verify,
 };
 
+// setup the default encoder/decoder
+const hlDefault = new Hashlink();
+hlDefault.use('sha2-256', _transformSha2256);
+hlDefault.use('multibase-base58btc', _transformMultibaseBase58btc);
+
 /**
  * Creates a hashlink. If only a `url` parameter is provided, the URL is
  * fetched, transformed, and encoded into a hashlink. If a data parameter
  * is provided, the hashlink is created from the data.
  *
  * @param {Object} options - The options for the create operation.
- * @param {Array} options.data - The data associated with the given URL. If
+ * @param {Uint8Array} options.data - The data associated with the given URL. If
  *   provided, this data is used to create the cryptographic hash.
  * @param {Array} options.urls - One or more URLs that contain the data
  *   referred to by the hashlink.
@@ -27,8 +32,14 @@ export {
  *
  * @returns {Promise<string>} Resolves to a string that is a hashlink.
  */
-async create({data, urls, transforms, meta}) {
-  throw new Error('Not implemented.');
+async function create({data, urls,
+  transforms = ['sha2-256', 'multibase-base58btc'], meta = {}}) {
+
+  if(data === undefined && urls == undefined) {
+    throw new Error('Either `data` or `urls` must be provided.')
+  }
+
+  return await hlDefault.create({data, urls, transforms, meta});
 }
 
 /**
@@ -40,7 +51,7 @@ async create({data, urls, transforms, meta}) {
  *
  * @returns {Object} Returns an object with the decoded hashlink values.
  */
-decode({hashlink}) {
+function decode({hashlink}) {
   throw new Error('Not implemented.');
 }
 
@@ -56,7 +67,30 @@ decode({hashlink}) {
  *
  * @returns {Promise<boolean>} true if the hashlink is valid, false otherwise.
  */
-async verify({hashlink, resolvers}) {
+async function verify({hashlink, resolvers}) {
   throw new Error('Not implemented.');
 }
 
+/**
+ * Transform function that takes a Uint8Array as input and performs a SHA-2
+ * cryptographic hash on the data and outputs a 256-bit value.
+ *
+ * @param {Uint8Array} input - The input for the transformation function.
+ *
+ * @returns {Uint8Array} the output of the transformation function.
+ */
+function _transformSha2256(input) {
+  return crypto.subtle.digest({name: 'SHA-256'}, input.buffer);
+}
+
+/**
+ * Transform function that takes a Uint8Array as input and performs a multibase
+ * base58btc encoding on the data.
+ *
+ * @param {Uint8Array} input - The input for the transformation function.
+ *
+ * @returns {Uint8Array} the output of the transformation function.
+ */
+function _transformMultibaseBase58btc(input) {
+  return 'z' + input;
+}
