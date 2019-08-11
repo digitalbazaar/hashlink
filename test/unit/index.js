@@ -4,7 +4,8 @@
 const chai = require('chai');
 const {Hashlink} = require('../../');
 const hl = require('../../');
-const {stringToUint8Array} = require('../../util.js');
+const jsonld = require('jsonld');
+const {stringToUint8Array, TextDecoder} = require('../../util.js');
 const transforms = require('../../transforms.js');
 
 chai.should();
@@ -102,6 +103,37 @@ describe('hashlink', function() {
         result.should.equal(
           'hl:zm9YZiJ7LARpE6oz:' +
           'zCwPSdabLuj3jue1qYujzunnKwpL4myKdyeqySyFhnzZ8qdfW3bb6W8dVdRu');
+      });
+    });
+
+    describe(`use API`, function() {
+      // create test JSON-LD
+      const jsonldData = {
+        "@type": ["http://schema.org/Person"],
+        "http://schema.org/jobTitle": [{"@value": "Professor"}],
+        "http://schema.org/name": [{"@value": "Jane Doe"}],
+        "http://schema.org/telephone": [{"@value": "(425) 123-4567"}],
+        "http://schema.org/url": [{"@id": "http://www.janedoe.com"}]
+      };
+
+      // setup the encoder/decoder
+      const hlInstance = new Hashlink();
+      hlInstance.use('urdna2015', async (input) => {
+        inputJsonld = JSON.parse(new TextDecoder().decode(input));
+        return await jsonld.canonize(
+          inputJsonld, {format: 'application/n-quads'});
+      });
+      hlInstance.use('mh-sha2-256', transforms.multihashSha2256);
+      hlInstance.use('mb-base58-btc', transforms.multibaseBase58btc);
+
+      it('use() with custom JSON-LD transform', async function() {
+        const result = await hlInstance.create({
+          data: stringToUint8Array(JSON.stringify(jsonldData)),
+          transforms: ['urdna2015', 'mh-sha2-256', 'mb-base58-btc']
+        });
+
+        result.should.equal(
+          'hl:zQmVcHtE3hUCF3s6fgjohUL3ANsKGnmRC9UsEaAjZuvgzdc');
       });
     });
   });

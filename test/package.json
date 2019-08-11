@@ -19,6 +19,7 @@
   "license": "BSD-3-Clause",
   "devDependencies": {
     "cross-env": "^5.2.0",
+    "jsonld": "^1.6.2",
     "karma": "^4.2.0",
     "karma-chrome-launcher": "^3.0.0",
     "karma-edge-launcher": "^0.4.2",
