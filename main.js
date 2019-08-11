@@ -5,6 +5,7 @@
 
 const base58 = require('./base58');
 import crypto from './crypto.js';
+const tforms = require('./transforms');
 const {Hashlink} = require('./Hashlink');
 const {stringToUint8Array} = require('./util');
 
@@ -18,8 +19,8 @@ export {
 
 // setup the default encoder/decoder
 const hlDefault = new Hashlink();
-hlDefault.use('mh-sha2-256', _transformMultihashSha2256);
-hlDefault.use('mb-base58-btc', _transformMultibaseBase58btc);
+hlDefault.use('mh-sha2-256', tforms.multihashSha2256);
+hlDefault.use('mb-base58-btc', tforms.multibaseBase58btc);
 
 /**
  * Creates a hashlink. If only a `url` parameter is provided, the URL is
@@ -71,36 +72,4 @@ function decode({hashlink}) {
  */
 async function verify({hashlink, resolvers}) {
   throw new Error('Not implemented.');
-}
-
-/**
- * Transform function that takes a Uint8Array as input and performs a SHA-2
- * cryptographic hash on the data and outputs a 256-bit value.
- *
- * @param {Uint8Array} input - The input for the transformation function.
- *
- * @returns {Uint8Array} the output of the transformation function.
- */
-async function _transformMultihashSha2256(input) {
-  const sha2256 = new Uint8Array(
-    await crypto.subtle.digest({name: 'SHA-256'}, input));
-  const mhsha2256 = new Uint8Array(sha2256.byteLength + 2);
-
-  mhsha2256[0] = 0x12; // multihash sha2-256: 0x12
-  mhsha2256[1] = 0x20; // multihash 32 bytes: 0x20
-  mhsha2256.set(sha2256, 2);
-
-  return mhsha2256;
-}
-
-/**
- * Transform function that takes a Uint8Array as input and performs a multibase
- * base58btc encoding on the data.
- *
- * @param {Uint8Array} input - The input for the transformation function.
- *
- * @returns {Uint8Array} the output of the transformation function.
- */
-function _transformMultibaseBase58btc(input) {
-  return new Uint8Array(stringToUint8Array('z' + base58.encode(input)));
 }

@@ -35,10 +35,15 @@ export class Hashlink {
    *
    * @returns {Promise<string>} Resolves to a string that is a hashlink.
    */
-  async create({data, urls, transforms, meta}) {
+  async create({data, urls, transforms, meta = {}}) {
     // ensure data or urls are provided
     if(data === undefined && urls == undefined) {
       throw new Error('Either `data` or `urls` must be provided.')
+    }
+
+    // transforms are provided
+    if(transforms === undefined) {
+      throw new Error('The hashlink creation `transforms` must be provided.')
     }
 
     if(urls) {
@@ -59,7 +64,8 @@ export class Hashlink {
     meta = Object.assign(meta, {'url': urls});
 
     // generate the encoded cryptographic hash
-    const outputData = await transforms.reduce(async (transformedData, transform) => {
+    const outputData = await transforms.reduce(
+      async (transformedData, transform) => {
       transformedData = await transformedData;
       transformedData = await this.registeredTransforms[transform](
         transformedData);
