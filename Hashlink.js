@@ -4,7 +4,7 @@
 'use strict';
 
 const cbor = require('borc');
-import {TextDecoder, TransformStream, stringToUint8Array} from './util.js';
+import {TextDecoder, stringToUint8Array} from './util.js';
 
 export class Hashlink {
   /**
