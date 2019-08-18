@@ -65,7 +65,7 @@ export class Hashlink {
 
     // generate the encoded cryptographic hash
     const outputData = await transforms.reduce(async (output, transform) =>
-    this.registeredTransforms[transform].encode(await output), data);
+      this.registeredTransforms[transform].encode(await output), data);
 
     // generate the encoded metadata
     const metadata = new Map();
@@ -139,16 +139,16 @@ export class Hashlink {
     // determine the multihash decoder
     const multihashDecoder = this._findDecoder(encodedMultihash);
 
-    // FIXME: This code path most likley doesn't work because the borc lib
-    //        does not support integers as keys for CBOR data
+    // extract the metadata to discover extra transforms
     let metaTransform = [];
     if(components.length === 3) {
       const encodedMeta = stringToUint8Array(components[2]);
       const cborMeta = multibaseDecoder.decode(encodedMeta);
-      meta = cbor.decode(cborMeta);
-
-      // extract transforms
-      const metaTransform = meta.get(0x0c);
+      const meta = cbor.decode(cborMeta);
+      // extract transforms if they exist
+      if(meta.has(0x0c)) {
+        metaTransform = meta.get(0x0c);
+      }
     }
 
     // generate the complete list of transforms

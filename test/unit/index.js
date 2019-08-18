@@ -15,6 +15,29 @@ describe('hashlink library', function() {
   const testData = stringToUint8Array('Hello World!');
   const exampleUrl = 'https://example.com/hw.txt';
 
+  // setup JSON-LD tests
+  const jsonldData = {
+    "@type": ["http://schema.org/Person"],
+    "http://schema.org/jobTitle": [{"@value": "Professor"}],
+    "http://schema.org/name": [{"@value": "Jane Doe"}],
+    "http://schema.org/telephone": [{"@value": "(425) 123-4567"}],
+    "http://schema.org/url": [{"@id": "http://www.janedoe.com"}]
+  };
+
+  // setup URDNA2015 transform
+  class Urdna2015 {
+    constructor() {
+      this.identifier = new Uint8Array([]);
+      this.algorithm = 'urdna2015';
+    }
+
+    async encode(input) {
+      const inputJsonld = JSON.parse(new TextDecoder().decode(input));
+      return await jsonld.canonize(
+        inputJsonld, {format: 'application/n-quads'});
+    }
+  }
+
   describe(`Hashlink class`, function() {
     describe(`create() [sha2-256]`, function() {
       // setup the encoder/decoder
@@ -183,32 +206,30 @@ describe('hashlink library', function() {
       });
     });
 
-    describe(`use()`, function() {
-      // create test JSON-LD
-      const jsonldData = {
-        "@type": ["http://schema.org/Person"],
-        "http://schema.org/jobTitle": [{"@value": "Professor"}],
-        "http://schema.org/name": [{"@value": "Jane Doe"}],
-        "http://schema.org/telephone": [{"@value": "(425) 123-4567"}],
-        "http://schema.org/url": [{"@id": "http://www.janedoe.com"}]
-      };
-
+    describe(`verify() [urdna2015]`,
+      function() {
       // setup the encoder/decoder
       const hlInstance = new Hashlink();
+      hlInstance.use(new Urdna2015());
+      hlInstance.use(new transforms.MultihashSha2256());
+      hlInstance.use(new transforms.MultibaseBase58btc());
 
-      class Urdna2015 {
-        constructor() {
-          this.identifier = new Uint8Array([]);
-          this.algorithm = 'urdna2015';
-        }
+      it('verify({data, hashlink}) should verify a hashlink',
+        async function() {
+        const result = await hlInstance.verify({
+          data: stringToUint8Array(JSON.stringify(jsonldData)),
+          hashlink:
+            'hl:zQmVcHtE3hUCF3s6fgjohUL3ANsKGnmRC9UsEaAjZuvgzdc:' +
+            'zER21ZLCmb3bkKNtm8g'
+        });
 
-        async encode(input) {
-          const inputJsonld = JSON.parse(new TextDecoder().decode(input));
-          return await jsonld.canonize(
-            inputJsonld, {format: 'application/n-quads'});
-        }
-      }
+        chai.expect(result).to.equal(true);
+      });
+    });
 
+    describe(`use()`, function() {
+      // setup the encoder/decoder
+      const hlInstance = new Hashlink();
       hlInstance.use(new Urdna2015());
       hlInstance.use(new transforms.MultihashSha2256());
       hlInstance.use(new transforms.MultibaseBase58btc());
