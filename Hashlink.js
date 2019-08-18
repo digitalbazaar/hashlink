@@ -67,7 +67,7 @@ export class Hashlink {
     const outputData = await transforms.reduce(
       async (transformedData, transform) => {
       transformedData = await transformedData;
-      transformedData = await this.registeredTransforms[transform](
+      transformedData = await this.registeredTransforms[transform].encode(
         transformedData);
       return transformedData;
     }, data);
@@ -88,7 +88,7 @@ export class Hashlink {
       const baseEncodingTransform = transforms[transforms.length - 1];
       const cborData = new Uint8Array(cbor.encode(metadata));
       const mbCborData = new TextDecoder().decode(
-        this.registeredTransforms[baseEncodingTransform](cborData));
+        this.registeredTransforms[baseEncodingTransform].encode(cborData));
 
       mhMeta = ':' + mbCborData;
     }
@@ -130,12 +130,12 @@ export class Hashlink {
    * mechanisms such as new cryptographic hashing, base-encoding, and
    * resolution mechanisms.
    *
-   * @param {string} algorithm - An algorithm identifier.
-   * @param {Function} transform - A Function(input) that transforms input
-   *   data to output data.
+   * @param {Transform} transform - A Transform class that has a .encode()
+   *   and a .decode() method. It must also have an ```identifier``` and
+   *   ```algorithm``` property.
    */
-  use(algorithm, method) {
-    this.registeredTransforms[algorithm] = method;
+  use(transform) {
+    this.registeredTransforms[transform.algorithm] = transform;
   }
 
 }

@@ -19,9 +19,9 @@ export {
 
 // setup the default encoder/decoder
 const hlDefault = new Hashlink();
-hlDefault.use('mh-sha2-256', tforms.multihashSha2256);
-hlDefault.use('mh-blake2b-64', tforms.multihashBlake2b32);
-hlDefault.use('mb-base58-btc', tforms.multibaseBase58btc);
+hlDefault.use(new tforms.MultihashSha2256());
+hlDefault.use(new tforms.MultihashBlake2b64());
+hlDefault.use(new tforms.MultibaseBase58btc());
 
 /**
  * Creates a hashlink. If only a `url` parameter is provided, the URL is
