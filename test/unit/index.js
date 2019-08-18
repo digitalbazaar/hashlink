@@ -151,6 +151,38 @@ describe('hashlink library', function() {
       });
     });
 
+    describe(`verify() [sha2-256]`, function() {
+      // setup the encoder/decoder
+      const hlInstance = new Hashlink();
+      hlInstance.use(new transforms.MultihashSha2256());
+      hlInstance.use(new transforms.MultibaseBase58btc());
+
+      it('verify({data, hashlink}) should verify a hashlink', async function() {
+        const result = await hlInstance.verify({
+          data: testData,
+          hashlink: 'hl:zQmWvQxTqbG2Z9HPJgG57jjwR154cKhbtJenbyYTWkjgF3e'
+        });
+
+        chai.expect(result).to.equal(true);
+      });
+    });
+
+    describe(`verify() [blake2b-64]`, function() {
+      // setup the encoder/decoder
+      const hlInstance = new Hashlink();
+      hlInstance.use(new transforms.MultihashBlake2b64());
+      hlInstance.use(new transforms.MultibaseBase58btc());
+
+      it('verify({data, hashlink}) should verify a hashlink', async function() {
+        const result = await hlInstance.verify({
+          data: testData,
+          hashlink: 'hl:zm9YZiJ7LARpE6oz'
+        });
+
+        chai.expect(result).to.equal(true);
+      });
+    });
+
     describe(`use()`, function() {
       // create test JSON-LD
       const jsonldData = {
@@ -229,6 +261,29 @@ describe('hashlink library', function() {
         result.should.equal(
           'hl:zQmWvQxTqbG2Z9HPJgG57jjwR154cKhbtJenbyYTWkjgF3e:' +
           'zCwPSdabLuj3jue1qYujzunnKwpL4myKdyeqySyFhnzZ8qdfW3bb6W8dVdRu');
+      });
+    });
+
+    describe(`verify() [sha2-256]`, function() {
+
+      it('verify({data, hashlink}) should verify a hashlink', async function() {
+        const result = await hl.verify({
+          data: testData,
+          hashlink: 'hl:zQmWvQxTqbG2Z9HPJgG57jjwR154cKhbtJenbyYTWkjgF3e'
+        });
+
+        chai.expect(result).to.equal(true);
+      });
+    });
+
+    describe(`verify() [blake2b-64]`, function() {
+      it('verify({data, hashlink}) should verify a hashlink', async function() {
+        const result = await hl.verify({
+          data: testData,
+          hashlink: 'hl:zm9YZiJ7LARpE6oz'
+        });
+
+        chai.expect(result).to.equal(true);
       });
     });
   });
