@@ -64,13 +64,8 @@ export class Hashlink {
     meta = {...meta, url: urls};
 
     // generate the encoded cryptographic hash
-    const outputData = await transforms.reduce(
-      async (transformedData, transform) => {
-      transformedData = await transformedData;
-      transformedData = await this.registeredTransforms[transform].encode(
-        transformedData);
-      return transformedData;
-    }, data);
+    const outputData = await transforms.reduce(async (output, transform) =>
+      this.registeredTransforms[transform].encode(await output), data);
 
     // generate the encoded metadata
     const metadata = new Map();
@@ -83,17 +78,21 @@ export class Hashlink {
     if(meta.experimental) {
       metadata.set(0x0d, meta.experimental);
     }
-    let mhMeta = '';
+
+    // build the hashlink
+    const textDecoder = new TextDecoder();
+    let hashlink = 'hl:' + textDecoder.decode(outputData);
+
+    // append meta data if present
     if(metadata.size > 0) {
       const baseEncodingTransform = transforms[transforms.length - 1];
       const cborData = new Uint8Array(cbor.encode(metadata));
-      const mbCborData = new TextDecoder().decode(
+      const mbCborData = textDecoder.decode(
         this.registeredTransforms[baseEncodingTransform].encode(cborData));
-
-      mhMeta = ':' + mbCborData;
+      hashlink += ':' + mbCborData;
     }
 
-    return 'hl:' + new TextDecoder().decode(outputData) + mhMeta;
+    return hashlink;
   }
 
   /**
@@ -132,7 +131,7 @@ export class Hashlink {
    *
    * @param {Transform} transform - A Transform instance that has a .encode()
    *   and a .decode() method. It must also have an `identifier` and
-   *   ```algorithm``` property.
+   *   `algorithm` property.
    */
   use(transform) {
     this.registeredTransforms[transform.algorithm] = transform;
