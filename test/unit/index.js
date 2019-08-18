@@ -61,6 +61,51 @@ describe('hashlink library', function() {
       });
     });
 
+    describe(`create API (blake2b-64)`, function() {
+      // setup the encoder/decoder
+      const hlInstance = new Hashlink();
+      hlInstance.use('mh-blake2b-64', transforms.multihashBlake2b64);
+      hlInstance.use('mb-base58-btc', transforms.multibaseBase58btc);
+
+      it('create({data, transforms}) should create a hashlink', async function() {
+        const result = await hlInstance.create({
+          data: testData,
+          transforms: ['mh-blake2b-64', 'mb-base58-btc']
+        });
+
+        result.should.equal('hl:zm9YZiJ7LARpE6oz');
+      });
+
+      it('create({data, urls, transforms}) should create a hashlink',
+        async function() {
+        const result = await hlInstance.create({
+          data: testData,
+          urls: [exampleUrl],
+          transforms: ['mh-blake2b-64', 'mb-base58-btc']
+        });
+
+        result.should.equal(
+          'hl:zm9YZiJ7LARpE6oz:' +
+          'z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy');
+      });
+
+      it('create({data, urls, meta, transforms}) should create a hashlink',
+        async function() {
+        const result = await hlInstance.create({
+          data: testData,
+          urls: [exampleUrl],
+          meta: {
+            'content-type': 'text/plain'
+          },
+          transforms: ['mh-blake2b-64', 'mb-base58-btc']
+        });
+
+        result.should.equal(
+          'hl:zm9YZiJ7LARpE6oz:' +
+          'zCwPSdabLuj3jue1qYujzunnKwpL4myKdyeqySyFhnzZ8qdfW3bb6W8dVdRu');
+      });
+    });
+
     describe(`create() [blake2b-64]`, function() {
       // setup the encoder/decoder
       const hlInstance = new Hashlink();
