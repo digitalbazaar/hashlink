@@ -24,7 +24,7 @@ export class Hashlink {
    * is provided, the hashlink is created from the data.
    *
    * @param {Object} options - The options for the create operation.
-   * @param {Uint8Array} options.data - The data associated with the given URL.
+   * @param {Uint8Array} [options.data] - The data associated with the given URL.
    *   If provided, this data is used to create the cryptographic hash.
    * @param {Array} options.urls - One or more URLs that contain the data
    *   referred to by the hashlink.
@@ -48,14 +48,14 @@ export class Hashlink {
 
     if(urls) {
       // ensure urls are an array
-      if(Array.isArray(urls) === false) {
+      if(!Array.isArray(urls)) {
         urls = [urls];
       }
 
       // ensure all URLs are strings
       urls.forEach(url => {
         if(typeof url !== 'string') {
-          throw new Error('Each `url` must be a string. Value: ' + url, url);
+          throw new Error(`Url "${url}" must be a string.`);
         }
       });
     }
