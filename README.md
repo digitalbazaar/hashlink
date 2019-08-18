@@ -129,7 +129,7 @@ const {Hashlink} = require('hashlink');
 
 // setup hl library to use RDF Dataset Canonicalization transform function
 const hl = new Hashlink();
-hl.use('urdna2015', jsonld.transforms.canonicalize);
+hl.use(new jsonld.transforms.Urdna2015());
 
 // create a hashlink using canonicalized data published at a URL
 const url = 'https://example.com/credential.jsonld';
@@ -183,7 +183,7 @@ const {Hashlink} = require('hashlink');
 
 // setup hl library to use RDF Dataset Canonicalization
 const hl = new Hashlink();
-hl.use('urdna2015', jsonld.transforms.canonicalize);
+hl.use(new jsonld.transforms.Urdna2015());
 
 // create a hashlink using canonicalized data published at a URL
 const hlUrl = 'hl:zQmWvQxTqbG2Z9HPJgG57jjwR154cKhbtJenbyYTWkjgF3e:zuh8iaLobXC8g9tfma1CSTtYBakXeSTkHrYA5hmD4F7dCLw8XYwZ1GWyJ3zwF';
@@ -215,7 +215,7 @@ const {Hashlink} = require('hashlink');
 
 // setup hl library to use RDF Dataset Canonicalization
 const hl = new Hashlink();
-hl.use('urdna2015', jsonld.transforms.canonicalize);
+hl.use(new jsonld.transforms.Urdna2015());
 ```
 
 Note the use of the `Hashlink` class above as well as the `use()` API. Using
@@ -254,4 +254,3 @@ Digital Bazaar: support@digitalbazaar.com
 ## License
 
 [New BSD License (3-clause)](LICENSE) © Digital Bazaar
-
