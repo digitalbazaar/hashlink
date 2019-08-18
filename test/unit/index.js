@@ -10,13 +10,13 @@ const transforms = require('../../transforms.js');
 
 chai.should();
 
-describe('hashlink', function() {
+describe('hashlink library', function() {
   // setup test data
   const testData = stringToUint8Array('Hello World!');
   const exampleUrl = 'https://example.com/hw.txt';
 
-  describe(`Hashlink`, function() {
-    describe(`create API (sha2-256)`, function() {
+  describe(`Hashlink class`, function() {
+    describe(`create() [sha2-256]`, function() {
       // setup the encoder/decoder
       const hlInstance = new Hashlink();
       hlInstance.use(new transforms.MultihashSha2256());
@@ -61,7 +61,7 @@ describe('hashlink', function() {
       });
     });
 
-    describe(`create API (blake2b-64)`, function() {
+    describe(`create() [blake2b-64]`, function() {
       // setup the encoder/decoder
       const hlInstance = new Hashlink();
       hlInstance.use(new transforms.MultihashBlake2b64());
@@ -106,7 +106,7 @@ describe('hashlink', function() {
       });
     });
 
-    describe(`use API`, function() {
+    describe(`use()`, function() {
       // create test JSON-LD
       const jsonldData = {
         "@type": ["http://schema.org/Person"],
@@ -149,7 +149,7 @@ describe('hashlink', function() {
   });
 
   describe(`convenience functionality`, function() {
-    describe(`create API`, function() {
+    describe(`create()`, function() {
 
       it('create({data}) should create a hashlink', async function() {
         const result = await hl.create({
