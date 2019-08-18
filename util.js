@@ -2,8 +2,6 @@
 import {TextDecoder, TextEncoder} from 'util';
 export {TextDecoder, TextEncoder};
 
-export {ReadableStream, TransformStream} from 'web-streams-polyfill/ponyfill';
-
 export function stringToUint8Array(data) {
   if(typeof data === 'string') {
     // convert data to Uint8Array
