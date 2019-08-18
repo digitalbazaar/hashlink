@@ -61,7 +61,7 @@ export class Hashlink {
     }
 
     // merge meta options with urls
-    meta = Object.assign(meta, {'url': urls});
+    meta = {...meta, url: urls};
 
     // generate the encoded cryptographic hash
     const outputData = await transforms.reduce(
