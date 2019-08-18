@@ -65,7 +65,7 @@ export class Hashlink {
 
     // generate the encoded cryptographic hash
     const outputData = await transforms.reduce(async (output, transform) =>
-      this.registeredTransforms[transform].encode(await output), data);
+    this.registeredTransforms[transform].encode(await output), data);
 
     // generate the encoded metadata
     const metadata = new Map();
