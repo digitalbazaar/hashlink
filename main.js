@@ -64,6 +64,8 @@ function decode({hashlink}) {
  *
  * @param {Object} options - The options for the create operation.
  * @param {string} options.hashlink - The encoded hashlink value to verify.
+ * @param {Uint8Array} options.data - Optional data to use when verifying
+ *   hashlink.
  * @param {Array} options.resolvers - An array of Objects with key-value
  *   pairs. Each object must contain a `scheme` key associated with a
  *   Function({url, options}) that resolves any URL with the given scheme
@@ -71,6 +73,6 @@ function decode({hashlink}) {
  *
  * @returns {Promise<boolean>} true if the hashlink is valid, false otherwise.
  */
-async function verify({hashlink, resolvers}) {
-  throw new Error('Not implemented.');
+async function verify({hashlink, data, resolvers}) {
+  return await hlDefault.verify({hashlink, data, resolvers});
 }
