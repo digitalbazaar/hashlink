@@ -22,8 +22,7 @@
   ],
   "dependencies": {
     "esm": "^3.2.22",
-    "isomorphic-webcrypto": "^1.6.1",
-    "web-streams-polyfill": "^2.0.3"
+    "isomorphic-webcrypto": "^1.6.1"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
