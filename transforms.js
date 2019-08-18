@@ -6,7 +6,7 @@
 const base58 = require('./base58');
 const blake2b = require('blakejs').blake2b;
 import crypto from './crypto.js';
-const {stringToUint8Array} = require('./util');
+const {TextDecoder, stringToUint8Array} = require('./util');
 
 export {
   MultihashSha2256,
@@ -101,5 +101,17 @@ class MultibaseBase58btc {
    */
   encode(input) {
     return new Uint8Array(stringToUint8Array('z' + base58.encode(input)));
+  }
+
+  /**
+   * Decoder function that takes a Uint8Array as input and performs a multibase
+   * base58btc decode on the data.
+   *
+   * @param {Uint8Array} input - The input for the transformation function.
+   *
+   * @returns {Uint8Array} the output of the transformation function.
+   */
+  decode(input) {
+    return base58.decode(new TextDecoder('utf-8').decode(input.slice(1)));
   }
 }

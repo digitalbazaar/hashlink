@@ -78,6 +78,9 @@ export class Hashlink {
     if(meta.experimental) {
       metadata.set(0x0d, meta.experimental);
     }
+    if(meta['transform']) {
+      metadata.set(0x0c, meta['transform']);
+    }
 
     // build the hashlink
     const textDecoder = new TextDecoder();
@@ -113,6 +116,7 @@ export class Hashlink {
    *
    * @param {Object} options - The options for the create operation.
    * @param {string} options.hashlink - The encoded hashlink value to verify.
+   * @param {string} options.data - The data to use for the hashlink.
    * @param {Array} options.resolvers - An array of Objects with key-value
    *   pairs. Each object must contain a `scheme` key associated with a
    *   Function({url, options}) that resolves any URL with the given scheme
@@ -120,8 +124,62 @@ export class Hashlink {
    *
    * @returns {Promise<boolean>} true if the hashlink is valid, false otherwise.
    */
-  async verify({hashlink, resolvers}) {
-    throw new Error('Not implemented.');
+  async verify({data, hashlink, resolvers}) {
+    const components = hashlink.split(':');
+    const encodedMultihash = stringToUint8Array(components[1]);
+
+    // determine the base encoding decoder
+    const multibaseDecoder = Object.values(this.registeredTransforms).reduce(
+      (decoder, transform) => {
+      let match = true;
+      let index = 0;
+      while(match && (index < transform.identifier.length)) {
+        match = transform.identifier[index] === encodedMultihash[index];
+        index++;
+      }
+      return (match) ? transform : decoder;
+    }, null);
+
+    if(!multibaseDecoder) {
+      throw new Error(
+        'Could not determine base encoding of hashlink: ' + hashlink);
+    }
+
+    // decode the multihash value
+    const multihash = multibaseDecoder.decode(encodedMultihash);
+
+    // determine the multihash decoder
+    const multihashDecoder = Object.values(this.registeredTransforms).reduce(
+      (decoder, transform) => {
+      let match = true;
+      let index = 0;
+      while(match && (index < transform.identifier.length)) {
+        match = transform.identifier[index] === multihash[index];
+        index++;
+      }
+      return (match) ? transform : decoder;
+    }, null);
+
+    // FIXME: This code path most likley doesn't work because of the borc lib
+    let metaTransform = [];
+    if(components.length > 2) {
+      const encodedMeta = null;
+      const cborMeta = multibaseDecoder.decode(encodedMultihash);
+      meta = cbor.decode(cborMeta);
+
+      // extract transforms
+      const metaTransform = meta.get(0x0c);
+    }
+
+    // generate the complete list of transforms
+    const transforms = metaTransform.concat(
+      [multihashDecoder.algorithm, multibaseDecoder.algorithm]);
+
+    // generate the hashlink
+    const generatedHashlink = await this.create({data, transforms});
+    const generatedComponents = generatedHashlink.split(':');
+
+    return components[1] === generatedComponents[1];
   }
 
   /**
