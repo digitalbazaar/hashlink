@@ -126,45 +126,25 @@ export class Hashlink {
    */
   async verify({data, hashlink, resolvers}) {
     const components = hashlink.split(':');
-    const encodedMultihash = stringToUint8Array(components[1]);
 
-    // determine the base encoding decoder
-    const multibaseDecoder = Object.values(this.registeredTransforms).reduce(
-      (decoder, transform) => {
-      let match = true;
-      let index = 0;
-      while(match && (index < transform.identifier.length)) {
-        match = transform.identifier[index] === encodedMultihash[index];
-        index++;
-      }
-      return (match) ? transform : decoder;
-    }, null);
-
-    if(!multibaseDecoder) {
-      throw new Error(
-        'Could not determine base encoding of hashlink: ' + hashlink);
+    if(components.length > 3) {
+      throw new Error(`Hashlink contains too many colons: ${hashlink}`)
     }
 
-    // decode the multihash value
-    const multihash = multibaseDecoder.decode(encodedMultihash);
+    // determine the base encoding decoder and decode the multihash value
+    const multibaseEncodedMultihash = stringToUint8Array(components[1]);
+    const multibaseDecoder = this._findDecoder(multibaseEncodedMultihash);
+    const encodedMultihash = multibaseDecoder.decode(multibaseEncodedMultihash);
 
     // determine the multihash decoder
-    const multihashDecoder = Object.values(this.registeredTransforms).reduce(
-      (decoder, transform) => {
-      let match = true;
-      let index = 0;
-      while(match && (index < transform.identifier.length)) {
-        match = transform.identifier[index] === multihash[index];
-        index++;
-      }
-      return (match) ? transform : decoder;
-    }, null);
+    const multihashDecoder = this._findDecoder(encodedMultihash);
 
-    // FIXME: This code path most likley doesn't work because of the borc lib
+    // FIXME: This code path most likley doesn't work because the borc lib
+    //        does not support integers as keys for CBOR data
     let metaTransform = [];
-    if(components.length > 2) {
-      const encodedMeta = null;
-      const cborMeta = multibaseDecoder.decode(encodedMultihash);
+    if(components.length === 3) {
+      const encodedMeta = stringToUint8Array(components[2]);
+      const cborMeta = multibaseDecoder.decode(encodedMeta);
       meta = cbor.decode(cborMeta);
 
       // extract transforms
@@ -179,6 +159,7 @@ export class Hashlink {
     const generatedHashlink = await this.create({data, transforms});
     const generatedComponents = generatedHashlink.split(':');
 
+    // check to see if the encoded hashes match
     return components[1] === generatedComponents[1];
   }
 
@@ -195,4 +176,29 @@ export class Hashlink {
     this.registeredTransforms[transform.algorithm] = transform;
   }
 
+  /**
+   * Finds a registered decoder for a given set of bytes or throws an Error.
+   *
+   * @param {Uint8Array} bytes - A stream of bytes to use when matching against
+   *   the registered decoders.
+   */
+  _findDecoder(bytes) {
+    const transforms = Object.values(this.registeredTransforms);
+    const decoder = transforms.reduce((decoder, transform) => {
+      let match = true;
+      let index = 0;
+      while(match && (index < transform.identifier.length)) {
+        match = transform.identifier[index] === bytes[index];
+        index++;
+      }
+      return (match) ? transform : decoder;
+    }, null);
+
+    if(decoder === null) {
+      throw new Error(
+        'Could not determine decoder for: ' + bytes);
+    }
+
+    return decoder;
+  }
 }
