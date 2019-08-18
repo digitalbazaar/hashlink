@@ -19,8 +19,8 @@ describe('hashlink', function() {
     describe(`create API (sha2-256)`, function() {
       // setup the encoder/decoder
       const hlInstance = new Hashlink();
-      hlInstance.use('mh-sha2-256', transforms.multihashSha2256);
-      hlInstance.use('mb-base58-btc', transforms.multibaseBase58btc);
+      hlInstance.use(new transforms.MultihashSha2256());
+      hlInstance.use(new transforms.MultibaseBase58btc());
 
       it('create({data, transforms}) should create a hashlink', async function() {
         const result = await hlInstance.create({
@@ -64,8 +64,8 @@ describe('hashlink', function() {
     describe(`create API (blake2b-64)`, function() {
       // setup the encoder/decoder
       const hlInstance = new Hashlink();
-      hlInstance.use('mh-blake2b-64', transforms.multihashBlake2b64);
-      hlInstance.use('mb-base58-btc', transforms.multibaseBase58btc);
+      hlInstance.use(new transforms.MultihashBlake2b64());
+      hlInstance.use(new transforms.MultibaseBase58btc());
 
       it('create({data, transforms}) should create a hashlink', async function() {
         const result = await hlInstance.create({
@@ -118,13 +118,23 @@ describe('hashlink', function() {
 
       // setup the encoder/decoder
       const hlInstance = new Hashlink();
-      hlInstance.use('urdna2015', async (input) => {
-        inputJsonld = JSON.parse(new TextDecoder().decode(input));
-        return await jsonld.canonize(
-          inputJsonld, {format: 'application/n-quads'});
-      });
-      hlInstance.use('mh-sha2-256', transforms.multihashSha2256);
-      hlInstance.use('mb-base58-btc', transforms.multibaseBase58btc);
+
+      class Urdna2015 {
+        constructor() {
+          this.identifier = new Uint8Array([]);
+          this.algorithm = 'urdna2015';
+        }
+
+        async encode(input) {
+          const inputJsonld = JSON.parse(new TextDecoder().decode(input));
+          return await jsonld.canonize(
+            inputJsonld, {format: 'application/n-quads'});
+        }
+      }
+
+      hlInstance.use(new Urdna2015());
+      hlInstance.use(new transforms.MultihashSha2256());
+      hlInstance.use(new transforms.MultibaseBase58btc());
 
       it('use() with custom JSON-LD transform', async function() {
         const result = await hlInstance.create({
