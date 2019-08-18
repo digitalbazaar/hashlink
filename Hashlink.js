@@ -41,7 +41,7 @@ export class Hashlink {
       throw new Error('Either `data` or `urls` must be provided.')
     }
 
-    // transforms are provided
+    // ensure transforms are provided
     if(transforms === undefined) {
       throw new Error('The hashlink creation `transforms` must be provided.')
     }
@@ -130,8 +130,8 @@ export class Hashlink {
    * mechanisms such as new cryptographic hashing, base-encoding, and
    * resolution mechanisms.
    *
-   * @param {Transform} transform - A Transform class that has a .encode()
-   *   and a .decode() method. It must also have an ```identifier``` and
+   * @param {Transform} transform - A Transform instance that has a .encode()
+   *   and a .decode() method. It must also have an `identifier` and
    *   ```algorithm``` property.
    */
   use(transform) {
