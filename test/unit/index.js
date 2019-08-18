@@ -64,8 +64,8 @@ describe('hashlink library', function() {
     describe(`create API (blake2b-64)`, function() {
       // setup the encoder/decoder
       const hlInstance = new Hashlink();
-      hlInstance.use('mh-blake2b-64', transforms.multihashBlake2b64);
-      hlInstance.use('mb-base58-btc', transforms.multibaseBase58btc);
+      hlInstance.use(new transforms.MultihashBlake2b64());
+      hlInstance.use(new transforms.MultibaseBase58btc());
 
       it('create({data, transforms}) should create a hashlink', async function() {
         const result = await hlInstance.create({
