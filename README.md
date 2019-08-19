@@ -90,15 +90,14 @@ sha256sum: 12207f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069
 
 To verify a hashlink, you can run the following command:
 
-```base
-./bin/hl verify "hl:zQmWvQxTqbG2Z9HPJgG57jjwR154cKhbtJenbyYTWkjgF3e:zuh8iaLobXC8g9tfma1CSTtYBakXeSTkHrYA5hmD4F7dCLw8XYwZ1GWyJ3zwF"
+```
+./bin/hl verify --file hw.txt hl:zQmNbCYUrvaVfy6w9b5W3SVTP2newPK5FoeY37QurUEUydH
 ```
 
 The command above will result in the following output:
 
 ```
-URLs: https://example.com/hw.txt
-Content hash: valid
+hashlink is valid
 ```
 
 ## API
