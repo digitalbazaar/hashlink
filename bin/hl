@@ -3,12 +3,17 @@
 const fs = require('fs-extra');
 const program = require('commander');
 const hl = require('../');
+const {URL} = require('url');
+
+function collect(value, previous) {
+  return previous.concat([value]);
+}
 
 program
   .command('create')
   .alias('c')
   .description('Create a hashlink given a URL and/or data.')
-  .option('-u, --url <location>', 'target URL for the hashlink')
+  .option('-u, --url <location>', 'target URL for the hashlink', collect, [])
   .option('-l, --legacy', 'create a hashlink for a legacy URL')
   .option('-h, --hash <algorithm>', 'cryptographic hash algorithm', 'sha2-256')
   .option('-b, --base <encoding>', 'base encoding', 'base58-btc')
@@ -19,12 +24,25 @@ program
       if(dataFile) {
         data = fs.readFileSync(dataFile, null);
       }
-      if(options.url) {
-        urls = [options.url];
+      if(options.url.length > 0) {
+        urls = options.url;
       }
       // generate transforms from command line options
       transforms = ['mh-' + options.hash, 'mb-' + options.base];
-      console.log(await hl.create({data, urls, transforms, meta}));
+      const hashlink = await hl.create({data, urls, transforms, meta});
+
+      if(options.legacy) {
+        // print out a legacy hashlink
+        const rawHashlink = hashlink.split(':')[1];
+        options.url.forEach(inputUrl => {
+          const outputUrl = new URL(inputUrl);
+          outputUrl.searchParams.set('hl', rawHashlink);
+          console.log(outputUrl.toString());
+        });
+      } else {
+        // print out the hashlink
+        console.log(hashlink);
+      }
     } catch(e) {
       console.error(`${e}`);
       process.exit(1);
@@ -54,7 +72,7 @@ program
           data = fs.readFileSync(options.file, null);
         }
         if(options.url) {
-          urls = [options.url];
+          urls = options.url;
         }
         // check to see if hashlink is valid
         const valid = await hl.verify({data, hashlink});
