@@ -68,9 +68,8 @@ program
       console.log();
       console.log('  Examples: ');
       console.log();
-      console.log('    hl verify hw.txt');
+      console.log('    hl verify --file hw.txt');
       console.log('    hl verify --url "https://example.com/hw.txt"');
-      console.log('    hl verify --url "https://example.com/hw.txt" hw.txt');
       console.log();
     });
 
