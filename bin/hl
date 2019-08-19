@@ -21,7 +21,6 @@ program
     try {
       let data, urls, codecs, meta = undefined;
       // read data from disk if provided
-      // read data from disk if provided
       if(dataFile) {
         data = fs.readFileSync(dataFile);
       }
