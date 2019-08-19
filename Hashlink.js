@@ -67,7 +67,7 @@ export class Hashlink {
     const outputData = await transforms.reduce(async (output, transform) => {
       const transformer = this.registeredTransforms[transform];
       if(transformer === undefined) {
-        throw new Error(`Unknown transformation "${transform}"`)
+        throw new Error(`Unknown transformation "${transform}".`);
       }
 
       return transformer.encode(await output);
