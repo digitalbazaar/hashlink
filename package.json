@@ -4,6 +4,9 @@
   "description": "Javascript Cryptographic Hyperlinks Library (hashlink)",
   "license": "BSD-3-Clause",
   "main": "index.js",
+  "bin": {
+    "hl": "./bin/hl.js"
+  },
   "scripts": {
     "test": "cd test && npm run test-node",
     "test-node": "cd test && npm run test-node",
