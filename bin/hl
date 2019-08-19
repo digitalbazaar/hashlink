@@ -1,0 +1,77 @@
+#!/usr/bin/env node
+
+const fs = require('fs-extra');
+const program = require('commander');
+const hl = require('../');
+
+program
+  .command('create')
+  .alias('c')
+  .description('Create a hashlink given a URL and/or data.')
+  .option('-u, --url <location>', 'target URL for the hashlink')
+  .option('-l, --legacy', 'create a hashlink for a legacy URL')
+  .option('-h, --hash <algorithm>', 'cryptographic hash algorithm', 'sha2-256')
+  .option('-b, --base <encoding>', 'base encoding', 'base58-btc')
+  .action(async (dataFile, options) => {
+    try {
+      let data, urls, transforms, meta = undefined;
+      if(dataFile) {
+        data = fs.readFileSync(dataFile, null);
+      }
+      if(options.url) {
+        urls = [options.url];
+      }
+      transforms = ['mh-' + options.hash, 'mb-' + options.base];
+      console.log(await hl.create({data, urls, transforms, meta}));
+    } catch(e) {
+      console.error(`${e}`);
+      process.exit(1);
+    }
+  })
+  .on('--help', () => {
+    console.log();
+    console.log('  Examples: ');
+    console.log();
+    console.log('    hl create hw.txt');
+    console.log('    hl create --url "https://example.com/hw.txt"');
+    console.log('    hl create --url "https://example.com/hw.txt" hw.txt');
+    console.log();
+  });
+
+  program
+    .command('verify')
+    .alias('v')
+    .description('Verify a hashlink.')
+    .option('-u, --url <location>', 'target URL for the hashlink')
+    .option('-f, --file <data>', 'load data to hash from specified file')
+    .action(async (hashlink, options) => {
+      try {
+        let data, urls, transforms, meta = undefined;
+        if(options.file) {
+          data = fs.readFileSync(options.file, null);
+        }
+        if(options.url) {
+          urls = [options.url];
+        }
+        const valid = await hl.verify({data, hashlink});
+        if(valid) {
+          console.log('hashlink is valid');
+        } else {
+          throw new Error('hashlink is invalid');
+        }
+      } catch(e) {
+        console.error(`${e}`);
+        process.exit(1);
+      }
+    })
+    .on('--help', () => {
+      console.log();
+      console.log('  Examples: ');
+      console.log();
+      console.log('    hl verify hw.txt');
+      console.log('    hl verify --url "https://example.com/hw.txt"');
+      console.log('    hl verify --url "https://example.com/hw.txt" hw.txt');
+      console.log();
+    });
+
+program.parse(process.argv);
