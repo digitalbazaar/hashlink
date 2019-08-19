@@ -12,7 +12,7 @@ chai.should();
 
 describe('hashlink library', function() {
   // setup test data
-  const testData = stringToUint8Array('Hello World!');
+  const testData = stringToUint8Array('Hello World!\n');
   const exampleUrl = 'https://example.com/hw.txt';
 
   // setup JSON-LD tests
@@ -51,7 +51,8 @@ describe('hashlink library', function() {
           transforms: ['mh-sha2-256', 'mb-base58-btc']
         });
 
-        result.should.equal('hl:zQmWvQxTqbG2Z9HPJgG57jjwR154cKhbtJenbyYTWkjgF3e');
+        result.should.equal(
+          'hl:zQmNbCYUrvaVfy6w9b5W3SVTP2newPK5FoeY37QurUEUydH');
       });
 
       it('create({data, urls, transforms}) should create a hashlink',
@@ -63,7 +64,7 @@ describe('hashlink library', function() {
         });
 
         result.should.equal(
-          'hl:zQmWvQxTqbG2Z9HPJgG57jjwR154cKhbtJenbyYTWkjgF3e:' +
+          'hl:zQmNbCYUrvaVfy6w9b5W3SVTP2newPK5FoeY37QurUEUydH:' +
           'z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy');
       });
 
@@ -79,7 +80,7 @@ describe('hashlink library', function() {
         });
 
         result.should.equal(
-          'hl:zQmWvQxTqbG2Z9HPJgG57jjwR154cKhbtJenbyYTWkjgF3e:' +
+          'hl:zQmNbCYUrvaVfy6w9b5W3SVTP2newPK5FoeY37QurUEUydH:' +
           'zCwPSdabLuj3jue1qYujzunnKwpL4myKdyeqySyFhnzZ8qdfW3bb6W8dVdRu');
       });
     });
@@ -96,7 +97,7 @@ describe('hashlink library', function() {
           transforms: ['mh-blake2b-64', 'mb-base58-btc']
         });
 
-        result.should.equal('hl:zm9YZiJ7LARpE6oz');
+        result.should.equal('hl:zm9YZpCjPLPJ4Epc');
       });
 
       it('create({data, urls, transforms}) should create a hashlink',
@@ -108,7 +109,7 @@ describe('hashlink library', function() {
         });
 
         result.should.equal(
-          'hl:zm9YZiJ7LARpE6oz:' +
+          'hl:zm9YZpCjPLPJ4Epc:' +
           'z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy');
       });
 
@@ -124,7 +125,7 @@ describe('hashlink library', function() {
         });
 
         result.should.equal(
-          'hl:zm9YZiJ7LARpE6oz:' +
+          'hl:zm9YZpCjPLPJ4Epc:' +
           'zCwPSdabLuj3jue1qYujzunnKwpL4myKdyeqySyFhnzZ8qdfW3bb6W8dVdRu');
       });
     });
@@ -141,7 +142,7 @@ describe('hashlink library', function() {
           transforms: ['mh-blake2b-64', 'mb-base58-btc']
         });
 
-        result.should.equal('hl:zm9YZiJ7LARpE6oz');
+        result.should.equal('hl:zm9YZpCjPLPJ4Epc');
       });
 
       it('create({data, urls, transforms}) should create a hashlink',
@@ -153,7 +154,7 @@ describe('hashlink library', function() {
         });
 
         result.should.equal(
-          'hl:zm9YZiJ7LARpE6oz:' +
+          'hl:zm9YZpCjPLPJ4Epc:' +
           'z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy');
       });
 
@@ -169,7 +170,7 @@ describe('hashlink library', function() {
         });
 
         result.should.equal(
-          'hl:zm9YZiJ7LARpE6oz:' +
+          'hl:zm9YZpCjPLPJ4Epc:' +
           'zCwPSdabLuj3jue1qYujzunnKwpL4myKdyeqySyFhnzZ8qdfW3bb6W8dVdRu');
       });
     });
@@ -183,7 +184,7 @@ describe('hashlink library', function() {
       it('verify({data, hashlink}) should verify a hashlink', async function() {
         const result = await hlInstance.verify({
           data: testData,
-          hashlink: 'hl:zQmWvQxTqbG2Z9HPJgG57jjwR154cKhbtJenbyYTWkjgF3e'
+          hashlink: 'hl:zQmNbCYUrvaVfy6w9b5W3SVTP2newPK5FoeY37QurUEUydH'
         });
 
         chai.expect(result).to.equal(true);
@@ -199,7 +200,7 @@ describe('hashlink library', function() {
       it('verify({data, hashlink}) should verify a hashlink', async function() {
         const result = await hlInstance.verify({
           data: testData,
-          hashlink: 'hl:zm9YZiJ7LARpE6oz'
+          hashlink: 'hl:zm9YZpCjPLPJ4Epc'
         });
 
         chai.expect(result).to.equal(true);
@@ -254,7 +255,7 @@ describe('hashlink library', function() {
           data: testData
         });
 
-        result.should.equal('hl:zQmWvQxTqbG2Z9HPJgG57jjwR154cKhbtJenbyYTWkjgF3e');
+        result.should.equal('hl:zQmNbCYUrvaVfy6w9b5W3SVTP2newPK5FoeY37QurUEUydH');
       });
 
       it('create({data, urls}) should create a hashlink',
@@ -265,7 +266,7 @@ describe('hashlink library', function() {
         });
 
         result.should.equal(
-          'hl:zQmWvQxTqbG2Z9HPJgG57jjwR154cKhbtJenbyYTWkjgF3e:' +
+          'hl:zQmNbCYUrvaVfy6w9b5W3SVTP2newPK5FoeY37QurUEUydH:' +
           'z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy');
       });
 
@@ -280,7 +281,7 @@ describe('hashlink library', function() {
         });
 
         result.should.equal(
-          'hl:zQmWvQxTqbG2Z9HPJgG57jjwR154cKhbtJenbyYTWkjgF3e:' +
+          'hl:zQmNbCYUrvaVfy6w9b5W3SVTP2newPK5FoeY37QurUEUydH:' +
           'zCwPSdabLuj3jue1qYujzunnKwpL4myKdyeqySyFhnzZ8qdfW3bb6W8dVdRu');
       });
     });
@@ -290,7 +291,7 @@ describe('hashlink library', function() {
       it('verify({data, hashlink}) should verify a hashlink', async function() {
         const result = await hl.verify({
           data: testData,
-          hashlink: 'hl:zQmWvQxTqbG2Z9HPJgG57jjwR154cKhbtJenbyYTWkjgF3e'
+          hashlink: 'hl:zQmNbCYUrvaVfy6w9b5W3SVTP2newPK5FoeY37QurUEUydH'
         });
 
         chai.expect(result).to.equal(true);
@@ -301,7 +302,7 @@ describe('hashlink library', function() {
       it('verify({data, hashlink}) should verify a hashlink', async function() {
         const result = await hl.verify({
           data: testData,
-          hashlink: 'hl:zm9YZiJ7LARpE6oz'
+          hashlink: 'hl:zm9YZpCjPLPJ4Epc'
         });
 
         chai.expect(result).to.equal(true);
