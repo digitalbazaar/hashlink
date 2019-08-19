@@ -23,7 +23,6 @@ program
       // read data from disk if provided
       if(dataFile) {
         data = fs.readFileSync(dataFile);
-        console.log(new Uint8Array(data));
       }
       if(options.url.length > 0) {
         urls = options.url;
