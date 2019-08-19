@@ -1,5 +1,8 @@
 # Javascript Cryptographic Hyperlinks Library _(hashlink)_
 
+[![NPM Version](https://img.shields.io/npm/v/hashlink.svg?style=flat-square)](https://npm.im/hashlink)
+[![Build Status](https://travis-ci.org/digitalbazaar/hashlink.png?branch=master)](https://travis-ci.org/digitalbazaar/hashlink)
+
 A Javascript library for encoding and decoding hashlinks.
 
 ## Table of Contents
