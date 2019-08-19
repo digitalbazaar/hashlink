@@ -44,18 +44,31 @@ Use on the command line, or see the API section below.
 
 ### Creating a Hashlink
 
-There are two ways to create a hashlink using the command line tool. The
-first is to provide a URL to the data:
+There are a number of ways you can create a hashlink. The simplest way is to
+provide the data directly.
 
 ```bash
-./bin/hl encode --url "https://example.com/hw.txt"
+./bin/hl create hw.txt
 ```
 
-The second way is to provide a data file and a URL where the file will be
-published to:
+You can create a hashlink from any data published on the Web:
 
 ```bash
-./bin/hl encode hw.txt --url "https://example.com/hw.txt"
+./bin/hl create --url "https://example.com/hw.txt"
+```
+
+You can also create a hashlink from data on disk and specify the location on
+the web that the data will be published to:
+
+```bash
+./bin/hl create --url "https://example.com/hw.txt" hw.txt
+```
+
+Hashlinks are also backwards compatible with legacy URL schemes, which enables
+you to use query parameters to encode the hashlink information:
+
+```bash
+./bin/hl create --legacy --url "https://example.com/hw.txt" hw.txt
 ```
 
 ### Decoding a Hashlink
