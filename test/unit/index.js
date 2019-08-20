@@ -6,7 +6,7 @@ const {Hashlink} = require('../../');
 const hl = require('../../');
 const jsonld = require('jsonld');
 const {stringToUint8Array, TextDecoder} = require('../../util.js');
-const transforms = require('../../transforms.js');
+const defaultCodecs = require('../../codecs.js');
 
 chai.should();
 
@@ -24,7 +24,7 @@ describe('hashlink library', function() {
     "http://schema.org/url": [{"@id": "http://www.janedoe.com"}]
   };
 
-  // setup URDNA2015 transform
+  // setup URDNA2015 codec
   class Urdna2015 {
     constructor() {
       this.identifier = new Uint8Array([]);
@@ -42,25 +42,25 @@ describe('hashlink library', function() {
     describe(`create() [sha2-256]`, function() {
       // setup the encoder/decoder
       const hlInstance = new Hashlink();
-      hlInstance.use(new transforms.MultihashSha2256());
-      hlInstance.use(new transforms.MultibaseBase58btc());
+      hlInstance.use(new defaultCodecs.MultihashSha2256());
+      hlInstance.use(new defaultCodecs.MultibaseBase58btc());
 
-      it('create({data, transforms}) should create a hashlink', async function() {
+      it('create({data, codecs}) should create a hashlink', async function() {
         const result = await hlInstance.create({
           data: testData,
-          transforms: ['mh-sha2-256', 'mb-base58-btc']
+          codecs: ['mh-sha2-256', 'mb-base58-btc']
         });
 
         result.should.equal(
           'hl:zQmNbCYUrvaVfy6w9b5W3SVTP2newPK5FoeY37QurUEUydH');
       });
 
-      it('create({data, urls, transforms}) should create a hashlink',
+      it('create({data, urls, codecs}) should create a hashlink',
         async function() {
         const result = await hlInstance.create({
           data: testData,
           urls: [exampleUrl],
-          transforms: ['mh-sha2-256', 'mb-base58-btc']
+          codecs: ['mh-sha2-256', 'mb-base58-btc']
         });
 
         result.should.equal(
@@ -68,7 +68,7 @@ describe('hashlink library', function() {
           'z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy');
       });
 
-      it('create({data, urls, meta, transforms}) should create a hashlink',
+      it('create({data, urls, meta, codecs}) should create a hashlink',
         async function() {
         const result = await hlInstance.create({
           data: testData,
@@ -76,7 +76,7 @@ describe('hashlink library', function() {
           meta: {
             'content-type': 'text/plain'
           },
-          transforms: ['mh-sha2-256', 'mb-base58-btc']
+          codecs: ['mh-sha2-256', 'mb-base58-btc']
         });
 
         result.should.equal(
@@ -88,24 +88,24 @@ describe('hashlink library', function() {
     describe(`create API (blake2b-64)`, function() {
       // setup the encoder/decoder
       const hlInstance = new Hashlink();
-      hlInstance.use(new transforms.MultihashBlake2b64());
-      hlInstance.use(new transforms.MultibaseBase58btc());
+      hlInstance.use(new defaultCodecs.MultihashBlake2b64());
+      hlInstance.use(new defaultCodecs.MultibaseBase58btc());
 
-      it('create({data, transforms}) should create a hashlink', async function() {
+      it('create({data, codecs}) should create a hashlink', async function() {
         const result = await hlInstance.create({
           data: testData,
-          transforms: ['mh-blake2b-64', 'mb-base58-btc']
+          codecs: ['mh-blake2b-64', 'mb-base58-btc']
         });
 
         result.should.equal('hl:zm9YZpCjPLPJ4Epc');
       });
 
-      it('create({data, urls, transforms}) should create a hashlink',
+      it('create({data, urls, codecs}) should create a hashlink',
         async function() {
         const result = await hlInstance.create({
           data: testData,
           urls: [exampleUrl],
-          transforms: ['mh-blake2b-64', 'mb-base58-btc']
+          codecs: ['mh-blake2b-64', 'mb-base58-btc']
         });
 
         result.should.equal(
@@ -113,7 +113,7 @@ describe('hashlink library', function() {
           'z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy');
       });
 
-      it('create({data, urls, meta, transforms}) should create a hashlink',
+      it('create({data, urls, meta, codecs}) should create a hashlink',
         async function() {
         const result = await hlInstance.create({
           data: testData,
@@ -121,7 +121,7 @@ describe('hashlink library', function() {
           meta: {
             'content-type': 'text/plain'
           },
-          transforms: ['mh-blake2b-64', 'mb-base58-btc']
+          codecs: ['mh-blake2b-64', 'mb-base58-btc']
         });
 
         result.should.equal(
@@ -133,24 +133,24 @@ describe('hashlink library', function() {
     describe(`create() [blake2b-64]`, function() {
       // setup the encoder/decoder
       const hlInstance = new Hashlink();
-      hlInstance.use(new transforms.MultihashBlake2b64());
-      hlInstance.use(new transforms.MultibaseBase58btc());
+      hlInstance.use(new defaultCodecs.MultihashBlake2b64());
+      hlInstance.use(new defaultCodecs.MultibaseBase58btc());
 
-      it('create({data, transforms}) should create a hashlink', async function() {
+      it('create({data, codecs}) should create a hashlink', async function() {
         const result = await hlInstance.create({
           data: testData,
-          transforms: ['mh-blake2b-64', 'mb-base58-btc']
+          codecs: ['mh-blake2b-64', 'mb-base58-btc']
         });
 
         result.should.equal('hl:zm9YZpCjPLPJ4Epc');
       });
 
-      it('create({data, urls, transforms}) should create a hashlink',
+      it('create({data, urls, codecs}) should create a hashlink',
         async function() {
         const result = await hlInstance.create({
           data: testData,
           urls: [exampleUrl],
-          transforms: ['mh-blake2b-64', 'mb-base58-btc']
+          codecs: ['mh-blake2b-64', 'mb-base58-btc']
         });
 
         result.should.equal(
@@ -158,7 +158,7 @@ describe('hashlink library', function() {
           'z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy');
       });
 
-      it('create({data, urls, meta, transforms}) should create a hashlink',
+      it('create({data, urls, meta, codecs}) should create a hashlink',
         async function() {
         const result = await hlInstance.create({
           data: testData,
@@ -166,7 +166,7 @@ describe('hashlink library', function() {
           meta: {
             'content-type': 'text/plain'
           },
-          transforms: ['mh-blake2b-64', 'mb-base58-btc']
+          codecs: ['mh-blake2b-64', 'mb-base58-btc']
         });
 
         result.should.equal(
@@ -178,8 +178,8 @@ describe('hashlink library', function() {
     describe(`verify() [sha2-256]`, function() {
       // setup the encoder/decoder
       const hlInstance = new Hashlink();
-      hlInstance.use(new transforms.MultihashSha2256());
-      hlInstance.use(new transforms.MultibaseBase58btc());
+      hlInstance.use(new defaultCodecs.MultihashSha2256());
+      hlInstance.use(new defaultCodecs.MultibaseBase58btc());
 
       it('verify({data, hashlink}) should verify a hashlink', async function() {
         const result = await hlInstance.verify({
@@ -194,8 +194,8 @@ describe('hashlink library', function() {
     describe(`verify() [blake2b-64]`, function() {
       // setup the encoder/decoder
       const hlInstance = new Hashlink();
-      hlInstance.use(new transforms.MultihashBlake2b64());
-      hlInstance.use(new transforms.MultibaseBase58btc());
+      hlInstance.use(new defaultCodecs.MultihashBlake2b64());
+      hlInstance.use(new defaultCodecs.MultibaseBase58btc());
 
       it('verify({data, hashlink}) should verify a hashlink', async function() {
         const result = await hlInstance.verify({
@@ -212,8 +212,8 @@ describe('hashlink library', function() {
       // setup the encoder/decoder
       const hlInstance = new Hashlink();
       hlInstance.use(new Urdna2015());
-      hlInstance.use(new transforms.MultihashSha2256());
-      hlInstance.use(new transforms.MultibaseBase58btc());
+      hlInstance.use(new defaultCodecs.MultihashSha2256());
+      hlInstance.use(new defaultCodecs.MultibaseBase58btc());
 
       it('verify({data, hashlink}) should verify a hashlink',
         async function() {
@@ -232,13 +232,13 @@ describe('hashlink library', function() {
       // setup the encoder/decoder
       const hlInstance = new Hashlink();
       hlInstance.use(new Urdna2015());
-      hlInstance.use(new transforms.MultihashSha2256());
-      hlInstance.use(new transforms.MultibaseBase58btc());
+      hlInstance.use(new defaultCodecs.MultihashSha2256());
+      hlInstance.use(new defaultCodecs.MultibaseBase58btc());
 
       it('use() with custom JSON-LD transform', async function() {
         const result = await hlInstance.create({
           data: stringToUint8Array(JSON.stringify(jsonldData)),
-          transforms: ['urdna2015', 'mh-sha2-256', 'mb-base58-btc']
+          codecs: ['urdna2015', 'mh-sha2-256', 'mb-base58-btc']
         });
 
         result.should.equal(

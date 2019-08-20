@@ -136,21 +136,21 @@ console.log(hlUrl);
 You can change the default options used by the hashlink function:
 
 ```js
-const jsonld = require('jsonld');
 const {Hashlink} = require('hashlink');
+const {Urdna2015} = require('hashlink-jsonld');
 
-// setup hl library to use RDF Dataset Canonicalization transform function
+// setup hl library to use RDF Dataset Canonicalization codec
 const hl = new Hashlink();
-hl.use(new jsonld.transforms.Urdna2015());
+hl.use(new Urdna2015());
 
 // create a hashlink using canonicalized data published at a URL
 const url = 'https://example.com/credential.jsonld';
-// transform the input data using urdna2015 canonicalization algorithm and
+// encode the input data using urdna2015 canonicalization algorithm and
 // then hash using blake2b with a 32-bit output
-const transform = ['urdna2015', 'blake2b-32'];
+const codecs = ['urdna2015', 'blake2b-32'];
 const hlUrl = await hl.create({
   url,
-  transform,
+  codecs,
   'content-type': 'application/ld+json'
 });
 
@@ -190,12 +190,12 @@ In some cases, you need to be able to canonize the contents of the hashlink
 in order to verify it:
 
 ```js
-const jsonld = require('jsonld');
 const {Hashlink} = require('hashlink');
+const {Urdna2016} = require('hashlink-jsonld');
 
-// setup hl library to use RDF Dataset Canonicalization
+// setup hl library to use RDF Dataset Canonicalization codec
 const hl = new Hashlink();
-hl.use(new jsonld.transforms.Urdna2015());
+hl.use(new Urdna2015());
 
 // create a hashlink using canonicalized data published at a URL
 const hlUrl = 'hl:zQmWvQxTqbG2Z9HPJgG57jjwR154cKhbtJenbyYTWkjgF3e:zuh8iaLobXC8g9tfma1CSTtYBakXeSTkHrYA5hmD4F7dCLw8XYwZ1GWyJ3zwF';
@@ -207,7 +207,7 @@ console.log(valid);
 ### Extending the Hashlink Library
 
 The Hashlink library is built to support arbitrary transformations of
-input data.
+input data using codecs (encoder/decoders).
 
 The Hashlink library has an internal default instance of a Hashlink
 class that is provided as a convenience so that for most use cases, the
@@ -224,10 +224,11 @@ hashed.
 
 ```js
 const {Hashlink} = require('hashlink');
+const {Urdna2015} = require('hashlink-jsonld');
 
 // setup hl library to use RDF Dataset Canonicalization
 const hl = new Hashlink();
-hl.use(new jsonld.transforms.Urdna2015());
+hl.use(new Urdna2015());
 ```
 
 Note the use of the `Hashlink` class above as well as the `use()` API. Using

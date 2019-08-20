@@ -16,7 +16,7 @@ export {
 
 class MultihashSha2256 {
   /**
-   * Creates a new MultihashSha2256 data transformer.
+   * Creates a new MultihashSha2256 data codec.
    *
    * @returns {MultihashSha2256} A MultihashSha2256 used to encode and decode
    *   Multihash SHA-2 256-bit values.
@@ -30,9 +30,9 @@ class MultihashSha2256 {
    * Encoder that takes a Uint8Array as input and performs a SHA-2
    * cryptographic hash on the data and outputs a multihash-encoded value.
    *
-   * @param {Uint8Array} input - The input for the transformation function.
+   * @param {Uint8Array} input - The input for the encode function.
    *
-   * @returns {Uint8Array} the output of the transformation function.
+   * @returns {Uint8Array} the output of the encode function.
    */
   async encode(input) {
     const sha2256 = new Uint8Array(
@@ -49,7 +49,7 @@ class MultihashSha2256 {
 
 class MultihashBlake2b64 {
   /**
-   * Creates a new MultihashBlake2b64 data transformer.
+   * Creates a new MultihashBlake2b64 data codec.
    *
    * @returns {MultihashBlake2b32} A MultihashBlake2b64 used to encode and
    *   decode Multihash Blake2b 64-bit values.
@@ -63,9 +63,9 @@ class MultihashBlake2b64 {
    * Encoder function that takes a Uint8Array as input and performs a blake2b
    * cryptographic hash on the data and outputs a multihash-encoded value.
    *
-   * @param {Uint8Array} input - The input for the transformation function.
+   * @param {Uint8Array} input - The input for the encode function.
    *
-   * @returns {Uint8Array} the output of the transformation function.
+   * @returns {Uint8Array} the output of the encode function.
    */
   async encode(input) {
     const blake2b64 = blake2b(input, null, 8);
@@ -81,7 +81,7 @@ class MultihashBlake2b64 {
 
 class MultibaseBase58btc {
   /**
-   * Creates a new MultibaseBase58btc data transformer.
+   * Creates a new MultibaseBase58btc data codec.
    *
    * @returns {MultibaseBase58btc} A MultibaseBase58btc used to encode and
    *   decode Multibase base58btc values.
@@ -95,9 +95,9 @@ class MultibaseBase58btc {
    * Encoder function that takes a Uint8Array as input and performs a multibase
    * base58btc encoding on the data.
    *
-   * @param {Uint8Array} input - The input for the transformation function.
+   * @param {Uint8Array} input - The input for the encode function.
    *
-   * @returns {Uint8Array} the output of the transformation function.
+   * @returns {Uint8Array} the output of the encode function.
    */
   encode(input) {
     return new Uint8Array(stringToUint8Array('z' + base58.encode(input)));
@@ -107,9 +107,9 @@ class MultibaseBase58btc {
    * Decoder function that takes a Uint8Array as input and performs a multibase
    * base58btc decode on the data.
    *
-   * @param {Uint8Array} input - The input for the transformation function.
+   * @param {Uint8Array} input - The input for the decode function.
    *
-   * @returns {Uint8Array} the output of the transformation function.
+   * @returns {Uint8Array} the output of the decode function.
    */
   decode(input) {
     return base58.decode(new TextDecoder('utf-8').decode(input.slice(1)));

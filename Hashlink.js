@@ -15,7 +15,7 @@ export class Hashlink {
    *   hyperlinks.
    */
   constructor() {
-    this.registeredTransforms = {};
+    this.registeredCodecs = {};
   }
 
   /**
@@ -26,24 +26,24 @@ export class Hashlink {
    * @param {Object} options - The options for the create operation.
    * @param {Uint8Array} [options.data] - The data associated with the given URL.
    *   If provided, this data is used to create the cryptographic hash.
-   * @param {Array} options.urls - One or more URLs that contain the data
+   * @param {Array} options.codecs - One or more codecs that should be used
+   *   to encode the data.
+   * @param {Array} [options.urls] - One or more URLs that contain the data
    *   referred to by the hashlink.
-   * @param {Array} options.transforms - One or more URLs that contain the data
-   *   referred to by the hashlink.
-   * @param {Object} options.meta - A set of key-value metadata that will be
+   * @param {Object} [options.meta] - A set of key-value metadata that will be
    *   encoded into the hashlink.
    *
    * @returns {Promise<string>} Resolves to a string that is a hashlink.
    */
-  async create({data, urls, transforms, meta = {}}) {
+  async create({data, urls, codecs, meta = {}}) {
     // ensure data or urls are provided
     if(data === undefined && urls == undefined) {
       throw new Error('Either `data` or `urls` must be provided.')
     }
 
-    // ensure transforms are provided
-    if(transforms === undefined) {
-      throw new Error('The hashlink creation `transforms` must be provided.')
+    // ensure codecs are provided
+    if(codecs === undefined) {
+      throw new Error('The hashlink creation `codecs` must be provided.')
     }
 
     if(urls) {
@@ -64,13 +64,13 @@ export class Hashlink {
     meta = {...meta, url: urls};
 
     // generate the encoded cryptographic hash
-    const outputData = await transforms.reduce(async (output, transform) => {
-      const transformer = this.registeredTransforms[transform];
-      if(transformer === undefined) {
-        throw new Error(`Unknown transformation "${transform}".`);
+    const outputData = await codecs.reduce(async (output, codec) => {
+      const encoder = this.registeredCodecs[codec];
+      if(encoder === undefined) {
+        throw new Error(`Unknown cryptographic hash encoder "${encoder}".`);
       }
 
-      return transformer.encode(await output);
+      return encoder.encode(await output);
     }, data);
 
     // generate the encoded metadata
@@ -94,10 +94,10 @@ export class Hashlink {
 
     // append meta data if present
     if(metadata.size > 0) {
-      const baseEncodingTransform = transforms[transforms.length - 1];
+      const baseEncodingCodec = codecs[codecs.length - 1];
       const cborData = new Uint8Array(cbor.encode(metadata));
       const mbCborData = textDecoder.decode(
-        this.registeredTransforms[baseEncodingTransform].encode(cborData));
+        this.registeredCodecs[baseEncodingCodec].encode(cborData));
       hashlink += ':' + mbCborData;
     }
 
@@ -157,12 +157,12 @@ export class Hashlink {
       }
     }
 
-    // generate the complete list of transforms
-    const transforms = metaTransform.concat(
+    // generate the complete list of codecs
+    const codecs = metaTransform.concat(
       [multihashDecoder.algorithm, multibaseDecoder.algorithm]);
 
     // generate the hashlink
-    const generatedHashlink = await this.create({data, transforms});
+    const generatedHashlink = await this.create({data, codecs});
     const generatedComponents = generatedHashlink.split(':');
 
     // check to see if the encoded hashes match
@@ -170,16 +170,16 @@ export class Hashlink {
   }
 
   /**
-   * Extends the Hashlink instance such that it can support new transformation
-   * mechanisms such as new cryptographic hashing, base-encoding, and
-   * resolution mechanisms.
+   * Extends the Hashlink instance such that it can support new codecs
+   * such as new cryptographic hashing, base-encoding, and resolution
+   * mechanisms.
    *
-   * @param {Transform} transform - A Transform instance that has a .encode()
+   * @param {Codec} codec - A Codec instance that has a .encode()
    *   and a .decode() method. It must also have an `identifier` and
    *   `algorithm` property.
    */
-  use(transform) {
-    this.registeredTransforms[transform.algorithm] = transform;
+  use(codec) {
+    this.registeredCodecs[codec.algorithm] = codec;
   }
 
   /**
@@ -189,15 +189,15 @@ export class Hashlink {
    *   the registered decoders.
    */
   _findDecoder(bytes) {
-    const transforms = Object.values(this.registeredTransforms);
-    const decoder = transforms.reduce((decoder, transform) => {
+    const codecs = Object.values(this.registeredCodecs);
+    const decoder = codecs.reduce((decoder, codec) => {
       let match = true;
       let index = 0;
-      while(match && (index < transform.identifier.length)) {
-        match = transform.identifier[index] === bytes[index];
+      while(match && (index < codec.identifier.length)) {
+        match = codec.identifier[index] === bytes[index];
         index++;
       }
-      return (match) ? transform : decoder;
+      return (match) ? codec : decoder;
     }, null);
 
     if(decoder === null) {
