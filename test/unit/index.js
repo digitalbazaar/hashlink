@@ -35,8 +35,8 @@ describe('hashlink library', function() {
 
     async encode(input) {
       const inputJsonld = JSON.parse(new TextDecoder().decode(input));
-      return await jsonld.canonize(
-        inputJsonld, {format: 'application/n-quads'});
+      return stringToUint8Array(await jsonld.canonize(
+        inputJsonld, {format: 'application/n-quads'}));
     }
   }
 
