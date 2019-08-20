@@ -4,6 +4,7 @@
 
 ### Fixed
 - Style and doc fixes.
+- Simplify and enable Karma testing.
 
 ## 0.9.0 - 2019-08-20
 
