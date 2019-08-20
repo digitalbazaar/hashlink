@@ -134,7 +134,8 @@ export class Hashlink {
     const components = hashlink.split(':');
 
     if(components.length > 3) {
-      throw new Error(`Hashlink "${hashlink}" contains too many colons.`)
+      throw new Error(`Hashlink "${hashlink}" is invalid; ` +
+        'it contains more than two colons.');
     }
 
     // determine the base encoding decoder and decode the multihash value
