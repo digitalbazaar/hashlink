@@ -74,5 +74,5 @@ function decode({hashlink}) {
  * @returns {Promise<boolean>} true if the hashlink is valid, false otherwise.
  */
 async function verify({hashlink, data, resolvers}) {
-  return await hlDefault.verify({hashlink, data, resolvers});
+  return hlDefault.verify({hashlink, data, resolvers});
 }
