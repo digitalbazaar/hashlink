@@ -1,5 +1,10 @@
 # hashlink ChangeLog
 
+## 0.9.1 - 2019-xx-xx
+
+### Fixed
+- Style and doc fixes.
+
 ## 0.9.0 - 2019-08-20
 
 ### Added

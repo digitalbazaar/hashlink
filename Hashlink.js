@@ -24,8 +24,8 @@ export class Hashlink {
    * is provided, the hashlink is created from the data.
    *
    * @param {Object} options - The options for the create operation.
-   * @param {Uint8Array} [options.data] - The data associated with the given URL.
-   *   If provided, this data is used to create the cryptographic hash.
+   * @param {Uint8Array} [options.data] - The data associated with the given
+   *   URL. If provided, this data is used to create the cryptographic hash.
    * @param {Array} options.codecs - One or more codecs that should be used
    *   to encode the data.
    * @param {Array} [options.urls] - One or more URLs that contain the data
@@ -38,12 +38,12 @@ export class Hashlink {
   async create({data, urls, codecs, meta = {}}) {
     // ensure data or urls are provided
     if(data === undefined && urls === undefined) {
-      throw new Error('Either `data` or `urls` must be provided.')
+      throw new Error('Either `data` or `urls` must be provided.');
     }
 
     // ensure codecs are provided
     if(codecs === undefined) {
-      throw new Error('The hashlink creation `codecs` must be provided.')
+      throw new Error('The hashlink creation `codecs` must be provided.');
     }
 
     if(urls) {
