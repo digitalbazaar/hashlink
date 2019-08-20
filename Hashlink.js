@@ -153,7 +153,7 @@ export class Hashlink {
       const meta = cbor.decode(cborMeta);
       // extract transforms if they exist
       if(meta.has(0x0c)) {
-        transforms.push(...meta.get(0x0c));
+        metaTransform.push(...meta.get(0x0c));
       }
     }
 
