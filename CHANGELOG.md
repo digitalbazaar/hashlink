@@ -1,6 +1,6 @@
 # hashlink ChangeLog
 
-## 0.8.1 - 2019-08-20
+## 0.9.0 - 2019-08-20
 
 ### Added
 - Add Acknowledgements to README.md
