@@ -19,7 +19,7 @@ program
   .option('-b, --base <encoding>', 'base encoding', 'base58-btc')
   .action(async (dataFile, options) => {
     try {
-      let data, urls, transforms, meta = undefined;
+      let data, urls, codecs, meta = undefined;
       // read data from disk if provided
       if(dataFile) {
         data = fs.readFileSync(dataFile);
@@ -27,9 +27,9 @@ program
       if(options.url.length > 0) {
         urls = options.url;
       }
-      // generate transforms from command line options
-      transforms = ['mh-' + options.hash, 'mb-' + options.base];
-      const hashlink = await hl.create({data, urls, transforms, meta});
+      // generate codecs from command line options
+      codecs = ['mh-' + options.hash, 'mb-' + options.base];
+      const hashlink = await hl.create({data, urls, codecs, meta});
 
       if(options.legacy) {
         // print out a legacy hashlink
@@ -66,7 +66,7 @@ program
     .option('-f, --file <data>', 'load data to hash from specified file')
     .action(async (hashlink, options) => {
       try {
-        let data, urls, transforms, meta = undefined;
+        let data, urls, codecs, meta = undefined;
         // read data from disk if provided
         if(options.file) {
           data = fs.readFileSync(options.file);
