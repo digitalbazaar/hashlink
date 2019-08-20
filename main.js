@@ -3,11 +3,11 @@
  */
 'use strict';
 
-//import * as base58 from './base58';
+//import * as base58 from './base58.js';
 //import crypto from './crypto.js';
-import * as defaultCodecs from './codecs';
-import {Hashlink} from './Hashlink';
-//import {stringToUint8Array} from './util';
+import * as defaultCodecs from './codecs.js';
+import {Hashlink} from './Hashlink.js';
+//import {stringToUint8Array} from './util.js';
 
 // setup exports for this module
 export {Hashlink} from './Hashlink.js';

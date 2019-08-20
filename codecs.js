@@ -3,10 +3,10 @@
  */
 'use strict';
 
-import * as base58 from './base58';
+import * as base58 from './base58.js';
 import {blake2b} from 'blakejs';
 import crypto from './crypto.js';
-import {TextDecoder, stringToUint8Array} from './util';
+import {TextDecoder, stringToUint8Array} from './util.js';
 
 class MultihashSha2256 {
   /**
