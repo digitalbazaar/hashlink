@@ -27,7 +27,6 @@ program
       if(options.url.length > 0) {
         urls = options.url;
       }
-      // generate transforms from command line options
       // generate codecs from command line options
       codecs = ['mh-' + options.hash, 'mb-' + options.base];
       const hashlink = await hl.create({data, urls, codecs, meta});
