@@ -141,12 +141,13 @@ The API is useful when integrating this library with a larger software system.
 
 ### Creating a Hashlink
 
-You can create a hashlink from an existing URL:
+You can create a hashlink from an existing URL (**coming soon**):
 
 ```js
 const hl = require('hashlink');
 
 const url = 'https://example.com/hw.txt';
+
 // create a hashlink by fetching the URL content and hashing it
 const hlUrl = await hl.create({url});
 
@@ -214,12 +215,15 @@ You can verify the integrity of a hashlink:
 ```js
 const hl = require('hashlink');
 
-const url = 'hl:zm9YZpCjPLPJ4Epc:z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy';
-const valid = await hl.verify(url);
+const hashlink = 'hl:zm9YZpCjPLPJ4Epc:z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy';
+const data = '...';
+const valid = await hl.verify({hashlink, data});
 
 // print out whether or not the hashlink is valid
 console.log(valid);
 ```
+
+### Advanced Verification
 
 In some cases, you need to be able to canonize the contents of the hashlink
 in order to verify it:
@@ -235,7 +239,7 @@ hl.use(new Urdna2015());
 // create a hashlink using canonicalized data published at a URL
 const hlUrl = 'hl:zQmWvQxTqbG2Z9HPJgG57jjwR154cKhbtJenbyYTWkjgF3e:' +
   'zuh8iaLobXC8g9tfma1CSTtYBakXeSTkHrYA5hmD4F7dCLw8XYwZ1GWyJ3zwF';
-const valid = await hl.verify(hlUrl);
+const valid = await hl.verify({hashlink: hlUrl});
 
 // print out whether or not the hashlink is valid
 console.log(valid);
