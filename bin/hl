@@ -58,41 +58,41 @@ program
     console.log();
   });
 
-  program
-    .command('verify')
-    .alias('v')
-    .description('Verify a hashlink.')
-    .option('-u, --url <location>', 'target URL for the hashlink')
-    .option('-f, --file <data>', 'load data to hash from specified file')
-    .action(async (hashlink, options) => {
-      try {
-        let data, urls, codecs, meta = undefined;
-        // read data from disk if provided
-        if(options.file) {
-          data = fs.readFileSync(options.file);
-        }
-        if(options.url) {
-          urls = options.url;
-        }
-        // check to see if hashlink is valid
-        const valid = await hl.verify({data, hashlink});
-        if(valid) {
-          console.log('hashlink is valid');
-        } else {
-          throw new Error('hashlink is invalid');
-        }
-      } catch(e) {
-        console.error(`${e}`);
-        process.exit(1);
+program
+  .command('verify')
+  .alias('v')
+  .description('Verify a hashlink.')
+  .option('-u, --url <location>', 'target URL for the hashlink')
+  .option('-f, --file <data>', 'load data to hash from specified file')
+  .action(async (hashlink, options) => {
+    try {
+      let data, urls, codecs, meta = undefined;
+      // read data from disk if provided
+      if(options.file) {
+        data = fs.readFileSync(options.file);
       }
-    })
-    .on('--help', () => {
-      console.log();
-      console.log('  Examples: ');
-      console.log();
-      console.log('    hl verify --file hw.txt');
-      console.log('    hl verify --url "https://example.com/hw.txt"');
-      console.log();
-    });
+      if(options.url) {
+        urls = options.url;
+      }
+      // check to see if hashlink is valid
+      const valid = await hl.verify({data, hashlink});
+      if(valid) {
+        console.log('hashlink is valid');
+      } else {
+        throw new Error('hashlink is invalid');
+      }
+    } catch(e) {
+      console.error(`${e}`);
+      process.exit(1);
+    }
+  })
+  .on('--help', () => {
+    console.log();
+    console.log('  Examples: ');
+    console.log();
+    console.log('    hl verify --file hw.txt');
+    console.log('    hl verify --url "https://example.com/hw.txt"');
+    console.log();
+  });
 
 program.parse(process.argv);

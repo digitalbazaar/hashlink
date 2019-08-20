@@ -16,6 +16,7 @@ describe('hashlink library', function() {
   const exampleUrl = 'https://example.com/hw.txt';
 
   // setup JSON-LD tests
+  /* eslint-disable quotes */
   const jsonldData = {
     "@type": ["http://schema.org/Person"],
     "http://schema.org/jobTitle": [{"@value": "Professor"}],
@@ -23,6 +24,7 @@ describe('hashlink library', function() {
     "http://schema.org/telephone": [{"@value": "(425) 123-4567"}],
     "http://schema.org/url": [{"@id": "http://www.janedoe.com"}]
   };
+  /* eslint-enable quotes */
 
   // setup URDNA2015 codec
   class Urdna2015 {
@@ -255,7 +257,8 @@ describe('hashlink library', function() {
           data: testData
         });
 
-        result.should.equal('hl:zQmNbCYUrvaVfy6w9b5W3SVTP2newPK5FoeY37QurUEUydH');
+        result.should.equal(
+          'hl:zQmNbCYUrvaVfy6w9b5W3SVTP2newPK5FoeY37QurUEUydH');
       });
 
       it('create({data, urls}) should create a hashlink',

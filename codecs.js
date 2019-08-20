@@ -8,12 +8,6 @@ const blake2b = require('blakejs').blake2b;
 import crypto from './crypto.js';
 const {TextDecoder, stringToUint8Array} = require('./util');
 
-export {
-  MultihashSha2256,
-  MultihashBlake2b64,
-  MultibaseBase58btc
-};
-
 class MultihashSha2256 {
   /**
    * Creates a new MultihashSha2256 data codec.
@@ -32,7 +26,7 @@ class MultihashSha2256 {
    *
    * @param {Uint8Array} input - The input for the encode function.
    *
-   * @returns {Uint8Array} the output of the encode function.
+   * @returns {Uint8Array} The output of the encode function.
    */
   async encode(input) {
     const sha2256 = new Uint8Array(
@@ -51,7 +45,7 @@ class MultihashBlake2b64 {
   /**
    * Creates a new MultihashBlake2b64 data codec.
    *
-   * @returns {MultihashBlake2b32} A MultihashBlake2b64 used to encode and
+   * @returns {MultihashBlake2b64} A MultihashBlake2b64 used to encode and
    *   decode Multihash Blake2b 64-bit values.
    */
   constructor() {
@@ -65,7 +59,7 @@ class MultihashBlake2b64 {
    *
    * @param {Uint8Array} input - The input for the encode function.
    *
-   * @returns {Uint8Array} the output of the encode function.
+   * @returns {Uint8Array} The output of the encode function.
    */
   async encode(input) {
     const blake2b64 = blake2b(input, null, 8);
@@ -97,7 +91,7 @@ class MultibaseBase58btc {
    *
    * @param {Uint8Array} input - The input for the encode function.
    *
-   * @returns {Uint8Array} the output of the encode function.
+   * @returns {Uint8Array} The output of the encode function.
    */
   encode(input) {
     return new Uint8Array(stringToUint8Array('z' + base58.encode(input)));
@@ -109,9 +103,15 @@ class MultibaseBase58btc {
    *
    * @param {Uint8Array} input - The input for the decode function.
    *
-   * @returns {Uint8Array} the output of the decode function.
+   * @returns {Uint8Array} The output of the decode function.
    */
   decode(input) {
     return base58.decode(new TextDecoder('utf-8').decode(input.slice(1)));
   }
 }
+
+export {
+  MultihashSha2256,
+  MultihashBlake2b64,
+  MultibaseBase58btc
+};
