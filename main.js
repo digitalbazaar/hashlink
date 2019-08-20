@@ -5,7 +5,7 @@
 
 const base58 = require('./base58');
 import crypto from './crypto.js';
-const tforms = require('./transforms');
+const defaultCodecs = require('./codecs');
 const {Hashlink} = require('./Hashlink');
 const {stringToUint8Array} = require('./util');
 
@@ -19,9 +19,9 @@ export {
 
 // setup the default encoder/decoder
 const hlDefault = new Hashlink();
-hlDefault.use(new tforms.MultihashSha2256());
-hlDefault.use(new tforms.MultihashBlake2b64());
-hlDefault.use(new tforms.MultibaseBase58btc());
+hlDefault.use(new defaultCodecs.MultihashSha2256());
+hlDefault.use(new defaultCodecs.MultihashBlake2b64());
+hlDefault.use(new defaultCodecs.MultibaseBase58btc());
 
 /**
  * Creates a hashlink. If only a `url` parameter is provided, the URL is
@@ -33,7 +33,7 @@ hlDefault.use(new tforms.MultibaseBase58btc());
  *   provided, this data is used to create the cryptographic hash.
  * @param {Array} options.urls - One or more URLs that contain the data
  *   referred to by the hashlink.
- * @param {Array} options.transforms - One or more URLs that contain the data
+ * @param {Array} options.codecs - One or more URLs that contain the data
  *   referred to by the hashlink.
  * @param {Object} options.meta - A set of key-value metadata that will be
  *   encoded into the hashlink.
@@ -41,9 +41,9 @@ hlDefault.use(new tforms.MultibaseBase58btc());
  * @returns {Promise<string>} Resolves to a string that is a hashlink.
  */
 async function create({data, urls,
-  transforms = ['mh-sha2-256', 'mb-base58-btc'], meta = {}}) {
+  codecs = ['mh-sha2-256', 'mb-base58-btc'], meta = {}}) {
 
-  return await hlDefault.create({data, urls, transforms, meta});
+  return await hlDefault.create({data, urls, codecs, meta});
 }
 
 /**
