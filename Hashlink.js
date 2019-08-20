@@ -3,7 +3,7 @@
  */
 'use strict';
 
-const cbor = require('borc');
+import * as cbor from 'borc';
 import {TextDecoder, stringToUint8Array} from './util.js';
 
 export class Hashlink {
