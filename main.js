@@ -3,11 +3,11 @@
  */
 'use strict';
 
-const base58 = require('./base58');
-import crypto from './crypto.js';
-const defaultCodecs = require('./codecs');
-const {Hashlink} = require('./Hashlink');
-const {stringToUint8Array} = require('./util');
+//import * as base58 from './base58';
+//import crypto from './crypto.js';
+import * as defaultCodecs from './codecs';
+import {Hashlink} from './Hashlink';
+//import {stringToUint8Array} from './util';
 
 // setup exports for this module
 export {Hashlink} from './Hashlink.js';

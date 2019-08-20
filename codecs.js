@@ -3,10 +3,10 @@
  */
 'use strict';
 
-const base58 = require('./base58');
-const blake2b = require('blakejs').blake2b;
+import * as base58 from './base58';
+import {blake2b} from 'blakejs';
 import crypto from './crypto.js';
-const {TextDecoder, stringToUint8Array} = require('./util');
+import {TextDecoder, stringToUint8Array} from './util';
 
 class MultihashSha2256 {
   /**
