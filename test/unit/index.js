@@ -27,7 +27,7 @@ describe('hashlink library', function() {
   // setup URDNA2015 codec
   class Urdna2015 {
     constructor() {
-      this.identifier = new Uint8Array([]);
+      this.identifier = stringToUint8Array('urdna2015');
       this.algorithm = 'urdna2015';
     }
 
