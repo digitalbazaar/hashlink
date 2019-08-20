@@ -187,24 +187,16 @@ export class Hashlink {
    *
    * @param {Uint8Array} bytes - A stream of bytes to use when matching against
    *   the registered decoders.
+   * @returns A registered decoder that can be used to encode/decode the byte
+   *   stream.
    */
   _findDecoder(bytes) {
-    const codecs = Object.values(this.registeredCodecs);
-    const decoder = codecs.reduce((decoder, codec) => {
-      let match = true;
-      let index = 0;
-      while(match && (index < codec.identifier.length)) {
-        match = codec.identifier[index] === bytes[index];
-        index++;
-      }
-      return (match) ? codec : decoder;
-    }, null);
-
-    if(decoder === null) {
-      throw new Error(
-        'Could not determine decoder for: ' + bytes);
+    const decoders = Object.values(this.registeredCodecs);
+    const decoder = decoders.find(
+      decoder => decoder.identifier.every((id, i) => id === bytes[i]));
+    if(!decoder) {
+      throw new Error('Could not determine decoder for: ' + bytes);
     }
-
     return decoder;
   }
 }
