@@ -30,7 +30,7 @@ class MultihashSha2256 {
    */
   async encode(input) {
     const sha2256 = new Uint8Array(
-      await crypto.subtle.digest({name: 'SHA-256'}, input));
+      await crypto.subtle.digest({name: 'SHA-256'}, input.buffer));
     const mhsha2256 = new Uint8Array(
       sha2256.byteLength + this.identifier.byteLength);
 
