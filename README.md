@@ -331,3 +331,9 @@ Digital Bazaar: support@digitalbazaar.com
 ## License
 
 [New BSD License (3-clause)](LICENSE) © Digital Bazaar
+
+## Acknowledgements
+
+The authors of this package thank Daniel Levett
+([dlevs](https://github.com/dlevs/)) for contributing the `hashlink` npm package
+name for use with this project.
