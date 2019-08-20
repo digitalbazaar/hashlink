@@ -84,7 +84,7 @@ export class Hashlink {
     if(meta.experimental) {
       metadata.set(0x0d, meta.experimental);
     }
-    if(meta['transform']) {
+    if(meta.transform) {
       metadata.set(0x0c, meta['transform']);
     }
 
@@ -134,7 +134,7 @@ export class Hashlink {
     const components = hashlink.split(':');
 
     if(components.length > 3) {
-      throw new Error(`Hashlink contains too many colons: ${hashlink}`)
+      throw new Error(`Hashlink "${hashlink}" contains too many colons.`)
     }
 
     // determine the base encoding decoder and decode the multihash value
@@ -153,7 +153,7 @@ export class Hashlink {
       const meta = cbor.decode(cborMeta);
       // extract transforms if they exist
       if(meta.has(0x0c)) {
-        metaTransform = meta.get(0x0c);
+        transforms.push(...meta.get(0x0c));
       }
     }
 
