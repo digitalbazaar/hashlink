@@ -40,8 +40,12 @@ hlDefault.use(new defaultCodecs.MultibaseBase58btc());
  *
  * @returns {Promise<string>} Resolves to a string that is a hashlink.
  */
-async function create({data, urls,
+async function create({data, urls, url,
   codecs = ['mh-sha2-256', 'mb-base58-btc'], meta = {}}) {
+
+  if(url && !urls) {
+    urls = [url];
+  }
 
   return await hlDefault.create({data, urls, codecs, meta});
 }
