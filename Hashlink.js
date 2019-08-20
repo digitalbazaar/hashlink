@@ -145,21 +145,20 @@ export class Hashlink {
     // determine the multihash decoder
     const multihashDecoder = this._findDecoder(encodedMultihash);
 
-    // extract the metadata to discover extra transforms
-    const transforms = [];
+    // extract the metadata to discover extra codecs
+    const codecs = [];
     if(components.length === 3) {
       const encodedMeta = stringToUint8Array(components[2]);
       const cborMeta = multibaseDecoder.decode(encodedMeta);
       const meta = cbor.decode(cborMeta);
       // extract transforms if they exist
       if(meta.has(0x0c)) {
-        transforms.push(...meta.get(0x0c));
+        codecs.push(...meta.get(0x0c));
       }
     }
 
     // generate the complete list of codecs
-    const codecs = transforms.push(
-      multihashDecoder.algorithm, multibaseDecoder.algorithm);
+    codecs.push(multihashDecoder.algorithm, multibaseDecoder.algorithm);
 
     // generate the hashlink
     const generatedHashlink = await this.create({data, codecs});
