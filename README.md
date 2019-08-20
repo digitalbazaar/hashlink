@@ -196,7 +196,7 @@ console.log(hlUrl);
 
 ### Decoding a Hashlink
 
-You can decode a hashlink by simply calling decode:
+You can decode a hashlink by simply calling decode (**coming soon**):
 
 ```js
 const hl = require('hashlink');
