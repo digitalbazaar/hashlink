@@ -3,7 +3,18 @@
 [![NPM Version](https://img.shields.io/npm/v/hashlink.svg?style=flat-square)](https://npm.im/hashlink)
 [![Build Status](https://travis-ci.org/digitalbazaar/hashlink.png?branch=master)](https://travis-ci.org/digitalbazaar/hashlink)
 
-A Javascript library for encoding and decoding hashlinks.
+A Javascript library for encoding, decoding, and verifying hashlinks as
+defined in the
+[IETF Hashlink draft spec](https://tools.ietf.org/html/draft-sporny-hashlink).
+
+Example Hashlinks:
+
+- Regular Hashlink (without URL encoded)
+  - `hl:zm9YZpCjPLPJ4Epc`
+- Regular Hashlink (with URL encoded):
+  - `hl:zm9YZpCjPLPJ4Epc:z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy`
+- Hashlink as a query parameter:
+  - `https://example.com/hw.txt?hl=zm9YZpCjPLPJ4Epc`
 
 ## Table of Contents
 
@@ -19,15 +30,36 @@ A Javascript library for encoding and decoding hashlinks.
 
 ## Security
 
-TBD
+Security is hard. Cryptography is harder. When in doubt, leave it to the
+professionals.
+
+While the authors of this library are professionals, and they have used
+cryptographic primitives and libraries written by people more capable than them,
+bugs happen. Implementers that use this library are urged to study the code and
+perform a review of their own before using this library in a production system.
+
+It is also possible to misuse this library in a variety of ways if you don't
+know what you are doing. If you are ever in doubt, remember that cryptography
+is hard. Leave it to the professionals.
 
 ## Background
 
-TBD
+When using a hyperlink to fetch a resource from the Internet, it is often
+useful to know if the resource has changed since the data was published.
+Cryptographic hashes, such as SHA-256, are often used to determine if
+published data has changed in unexpected ways. Due to the nature of most
+hyperlinks, the cryptographic hash is often published separately from the
+link itself. The Hashlink specification describes a data model and serialization
+formats for expressing cryptographically protected hyperlinks. The mechanisms
+described in the Hashlink specification enables a system to publish a hyperlink
+in a way that empowers a consuming application to determine if the resource
+associated with the hyperlink has changed in unexpected ways.
 
 See also (related specs):
 
-* [IETF Hashlink RFC](https://tools.ietf.org/html/draft-sporny-hashlink)
+* [IETF Hashlink draft spec](https://tools.ietf.org/html/draft-sporny-hashlink)
+* [IETF Multihash draft spec](https://tools.ietf.org/html/draft-multiformats-multihash)
+* [IETF Multibase draft spec](https://tools.ietf.org/html/draft-multiformats-multibase)
 
 ## Install
 
@@ -79,7 +111,7 @@ you to use query parameters to encode the hashlink information:
 To decode a hashlink, you can run the following command:
 
 ```base
-./bin/hl decode "hl:zQmWvQxTqbG2Z9HPJgG57jjwR154cKhbtJenbyYTWkjgF3e:zuh8iaLobXC8g9tfma1CSTtYBakXeSTkHrYA5hmD4F7dCLw8XYwZ1GWyJ3zwF"
+./bin/hl decode hl:zm9YZpCjPLPJ4Epc:z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy
 ```
 
 The command above will result in the following output:
@@ -128,7 +160,7 @@ You can create a hashlink from data:
 const hl = require('hashlink');
 
 // create a hashlink using data to be published at a URL
-const data = 'Hello World!';
+const data = fs.readFileSync('hw.txt');
 const url = 'https://example.com/hw.txt';
 const hlUrl = await hl.create({data, url});
 
@@ -149,8 +181,8 @@ hl.use(new Urdna2015());
 // create a hashlink using canonicalized data published at a URL
 const url = 'https://example.com/credential.jsonld';
 // encode the input data using urdna2015 canonicalization algorithm and
-// then hash using blake2b with a 32-bit output
-const codecs = ['urdna2015', 'blake2b-32'];
+// then hash using blake2b with a 64-bit output
+const codecs = ['urdna2015', 'blake2b-64'];
 const hlUrl = await hl.create({
   url,
   codecs,
@@ -168,7 +200,7 @@ You can decode a hashlink by simply calling decode:
 ```js
 const hl = require('hashlink');
 
-const url = 'hl:zQmWvQxTqbG2Z9HPJgG57jjwR154cKhbtJenbyYTWkjgF3e:zuh8iaLobXC8g9tfma1CSTtYBakXeSTkHrYA5hmD4F7dCLw8XYwZ1GWyJ3zwF';
+const url = 'hl:zm9YZpCjPLPJ4Epc:z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy';
 const hlData = hl.decode(url);
 
 // print out the decoded hashlink information (an object)
@@ -182,7 +214,7 @@ You can verify the integrity of a hashlink:
 ```js
 const hl = require('hashlink');
 
-const url = 'hl:zQmWvQxTqbG2Z9HPJgG57jjwR154cKhbtJenbyYTWkjgF3e:zuh8iaLobXC8g9tfma1CSTtYBakXeSTkHrYA5hmD4F7dCLw8XYwZ1GWyJ3zwF';
+const url = 'hl:zm9YZpCjPLPJ4Epc:z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy';
 const valid = await hl.verify(url);
 
 // print out whether or not the hashlink is valid
@@ -201,7 +233,8 @@ const hl = new Hashlink();
 hl.use(new Urdna2015());
 
 // create a hashlink using canonicalized data published at a URL
-const hlUrl = 'hl:zQmWvQxTqbG2Z9HPJgG57jjwR154cKhbtJenbyYTWkjgF3e:zuh8iaLobXC8g9tfma1CSTtYBakXeSTkHrYA5hmD4F7dCLw8XYwZ1GWyJ3zwF';
+const hlUrl = 'hl:zQmWvQxTqbG2Z9HPJgG57jjwR154cKhbtJenbyYTWkjgF3e:' +
+  'zuh8iaLobXC8g9tfma1CSTtYBakXeSTkHrYA5hmD4F7dCLw8XYwZ1GWyJ3zwF';
 const valid = await hl.verify(hlUrl);
 
 // print out whether or not the hashlink is valid
@@ -227,11 +260,39 @@ hashed.
 
 ```js
 const {Hashlink} = require('hashlink');
-const {Urdna2015} = require('hashlink-jsonld');
+const jsonld = require('jsonld');
+
+// setup URDNA2015 codec that encodes
+class Urdna2015 {
+  constructor() {
+    this.algorithm = 'urdna2015';
+  }
+
+  async encode(input) {
+    const inputJsonld = JSON.parse(new TextDecoder().decode(input));
+    return await jsonld.canonize(
+      inputJsonld, {format: 'application/n-quads'});
+  }
+}
 
 // setup hl library to use RDF Dataset Canonicalization
 const hl = new Hashlink();
 hl.use(new Urdna2015());
+
+// create a hashlink using canonicalized data published at a URL
+const url = 'https://example.com/credential.jsonld';
+
+// encode the input data using urdna2015 canonicalization algorithm and
+// then hash using blake2b with a 64-bit output
+const codecs = ['urdna2015', 'blake2b-64'];
+const hlUrl = await hl.create({
+  url,
+  codecs,
+  'content-type': 'application/ld+json'
+});
+
+// print out the hashlink
+console.log(hlUrl);
 ```
 
 Note the use of the `Hashlink` class above as well as the `use()` API. Using
