@@ -55,7 +55,7 @@ export class Hashlink {
       // ensure all URLs are strings
       urls.forEach(url => {
         if(typeof url !== 'string') {
-          throw new Error(`Url "${url}" must be a string.`);
+          throw new Error(`URL "${url}" must be a string.`);
         }
       });
     }
