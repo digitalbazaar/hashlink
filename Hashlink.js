@@ -123,7 +123,7 @@ export class Hashlink {
    * @param {Object} options - The options for the encode operation.
    * @param {string} options.hashlink - The encoded hashlink value to verify.
    * @param {string} options.data - The data to use for the hashlink.
-   * @param {Array} options.resolvers - An array of Objects with key-value
+   * @param {Array} [options.resolvers] - An array of Objects with key-value
    *   pairs. Each object must contain a `scheme` key associated with a
    *   Function({url, options}) that resolves any URL with the given scheme
    *   and options to data.
