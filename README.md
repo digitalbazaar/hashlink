@@ -63,6 +63,15 @@ See also (related specs):
 
 ## Install
 
+To use this library in the browser, you can include the latest version
+via a simple script tag:
+
+```
+  <script src="https://unpkg.com/hashlink/dist/hashlink.min.js"></script>
+```
+
+To use the library in Node.js:
+
 - Node.js 8.3+ required.
 
 To install locally (for development):
@@ -138,6 +147,16 @@ hashlink is valid
 ## API
 
 The API is useful when integrating this library with a larger software system.
+
+You can use the API in the browser by including the latest version
+via a simple script tag:
+
+```
+  <script src="https://unpkg.com/hashlink/dist/hashlink.min.js"></script>
+```
+
+The rest of the examples in this section assume a node.js environment, but
+all API calls listed below are also available in the browser version.
 
 ### Creating a Hashlink
 
