@@ -2,6 +2,10 @@
 
 ## 0.9.1 - 2019-xx-xx
 
+### Added
+- Browser packaging.
+- Webpack support.
+
 ### Fixed
 - Style and doc fixes.
 - Simplify and enable Karma testing.
