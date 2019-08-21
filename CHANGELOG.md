@@ -1,6 +1,6 @@
 # hashlink ChangeLog
 
-## 0.9.1 - 2019-xx-xx
+## 0.10.0 - 2019-08-21
 
 ### Added
 - Browser packaging.
