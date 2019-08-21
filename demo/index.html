@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+  <title>Hashlink Test</title>
+  <script src="https://unpkg.com/hashlink@0.10.0/dist/hashlink.min.js"></script>
+</head>
+<body onload="testHashlink()">
+
+  <p>
+    "Hello World!\n" encoded as a Hashlink (base58btc encoded sha2-256 hash)
+    is:
+  </p>
+
+  <p id="hlvalue"></p>
+
+  <script>
+    async function testHashlink() {
+      // create data to create a hashlink for
+      const data = new TextEncoder().encode('Hello World!\n');
+      // get element to write hashlink value into
+      const hlElement = document.getElementById('hlvalue');
+      // write hashlink value into element
+      hlElement.innerHTML = await window.hashlink.create({data});
+    }
+  </script>
+
+</body>
+</html>
