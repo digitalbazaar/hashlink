@@ -5,6 +5,7 @@
 ### Fixed
 - Style and doc fixes.
 - Simplify and enable Karma testing.
+  - Currently using a CBOR library that uses a Buffer polyfill.
 - Test codec buffer handling.
 
 ## 0.9.0 - 2019-08-20

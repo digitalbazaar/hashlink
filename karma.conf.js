@@ -23,6 +23,7 @@ module.exports = function(config) {
       devtool: 'inline-source-map',
       mode: 'development',
       node: {
+        // FIXME: prefer a non Buffer based CBOR library
         //Buffer: false,
         crypto: false,
         setImmediate: false
