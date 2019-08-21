@@ -1,5 +1,11 @@
 # hashlink ChangeLog
 
+## 0.10.1 - 2019-08-21
+
+### Added
+- Browser demo for Github pages.
+- Instructions for use in browser environments.
+
 ## 0.10.0 - 2019-08-21
 
 ### Added
