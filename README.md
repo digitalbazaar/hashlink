@@ -220,8 +220,8 @@ You can decode a hashlink by simply calling decode (**coming soon**):
 ```js
 const hl = require('hashlink');
 
-const url = 'hl:zm9YZpCjPLPJ4Epc:z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy';
-const hlData = hl.decode(url);
+const hashlink = 'hl:zm9YZpCjPLPJ4Epc:z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy';
+const hlData = hl.decode({hashlink});
 
 // print out the decoded hashlink information (an object)
 console.log(hlData);
@@ -249,7 +249,7 @@ in order to verify it:
 
 ```js
 const {Hashlink} = require('hashlink');
-const {Urdna2016} = require('hashlink-jsonld');
+const {Urdna2015} = require('hashlink-jsonld');
 
 // setup hl library to use RDF Dataset Canonicalization codec
 const hl = new Hashlink();

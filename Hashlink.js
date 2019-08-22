@@ -23,22 +23,21 @@ export class Hashlink {
    * fetched, transformed, and encoded into a hashlink. If a data parameter
    * is provided, the hashlink is encoded from the data.
    *
-   * @param {Object} options - The options for the encode operation.
-   * @param {Uint8Array} [options.data] - The data associated with the given
+   * @param {Uint8Array} [data] - The data associated with the given
    *   URL. If provided, this data is used to encode the cryptographic hash.
-   * @param {Array} options.codecs - One or more codecs that should be used
+   * @param {Array<object>} codecs - One or more codecs that should be used
    *   to encode the data.
-   * @param {Array} [options.urls] - One or more URLs that contain the data
+   * @param {string|Array} [url] - One or more URLs that contain the data
    *   referred to by the hashlink.
-   * @param {Object} [options.meta] - A set of key-value metadata that will be
+   * @param {object} [meta={}] - A set of key-value metadata that will be
    *   encoded into the hashlink.
    *
    * @returns {Promise<string>} Resolves to a string that is a hashlink.
    */
-  async encode({data, urls, codecs, meta = {}}) {
-    // ensure data or urls are provided
-    if(data === undefined && urls === undefined) {
-      throw new Error('Either `data` or `urls` must be provided.');
+  async encode({data, url, codecs, meta = {}}) {
+    // ensure data or url are provided
+    if(data === undefined && url === undefined) {
+      throw new Error('Either `data` or `url` must be provided.');
     }
 
     // ensure codecs are provided
@@ -46,22 +45,21 @@ export class Hashlink {
       throw new Error('The hashlink creation `codecs` must be provided.');
     }
 
-    if(urls !== undefined) {
-      // ensure urls are an array
-      if(!Array.isArray(urls)) {
-        urls = [urls];
+    if(url) {
+      // ensure url are an array
+      if(!Array.isArray(url)) {
+        url = [url];
       }
 
       // ensure all URLs are strings
-      urls.forEach(url => {
+      url.forEach(url => {
         if(typeof url !== 'string') {
           throw new Error(`URL "${url}" must be a string.`);
         }
       });
 
-      // merge meta options with urls
-      meta = {...meta, url: urls};
-    }
+    // merge meta options with url
+    meta = {...meta, url};
 
     // generate the encoded cryptographic hash
     const outputData = await codecs.reduce(async (output, codec) => {
@@ -108,10 +106,9 @@ export class Hashlink {
    * Decodes a hashlink resulting in an object with key-value pairs
    * representing the values encoded in the hashlink.
    *
-   * @param {Object} options - The options for the encode operation.
-   * @param {string} options.hashlink - The encoded hashlink value to decode.
+   * @param {string} hashlink - The encoded hashlink value to decode.
    *
-   * @returns {Object} Returns an object with the decoded hashlink values.
+   * @returns {object} Returns an object with the decoded hashlink values.
    */
   decode({hashlink}) {
     throw new Error('Not implemented.');
@@ -120,12 +117,12 @@ export class Hashlink {
   /**
    * Verifies a hashlink resulting in a simple true or false value.
    *
-   * @param {Object} options - The options for the encode operation.
+   * @param {object} options - The options for the encode operation.
    * @param {string} options.hashlink - The encoded hashlink value to verify.
    * @param {string} options.data - The data to use for the hashlink.
-   * @param {Array} [options.resolvers] - An array of Objects with key-value
-   *   pairs. Each object must contain a `scheme` key associated with a
-   *   Function({url, options}) that resolves any URL with the given scheme
+   * @param {Array<object>} [options.resolvers] - An array of Objects with
+   *   key-value pairs. Each object must contain a `scheme` key associated with
+   *   a Function({url, options}) that resolves any URL with the given scheme
    *   and options to data.
    *
    * @returns {Promise<boolean>} true if the hashlink is valid, false otherwise.
