@@ -1,5 +1,8 @@
 # hashlink ChangeLog
 
+### Fixed
+- Distribute all js files.
+
 ## 0.10.3 - 2019-09-06
 
 ### Fixed

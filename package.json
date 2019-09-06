@@ -15,9 +15,11 @@
     "build": "webpack"
   },
   "files": [
-    "bin/hl",
     "Hashlink.js",
     "base58.js",
+    "baseN.js",
+    "bin/hl",
+    "codecs.js",
     "crypto-browser.js",
     "crypto.js",
     "dist/*.js",
