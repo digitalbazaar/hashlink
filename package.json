@@ -1,6 +1,6 @@
 {
   "name": "hashlink",
-  "version": "0.10.4-0",
+  "version": "0.10.4",
   "description": "Javascript Cryptographic Hyperlinks Library (hashlink)",
   "license": "BSD-3-Clause",
   "main": "index.js",
