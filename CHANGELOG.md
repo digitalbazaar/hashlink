@@ -1,5 +1,8 @@
 # hashlink ChangeLog
 
+### Fixed
+- Path in package.json for hl binary.
+
 ## 0.10.1 - 2019-08-21
 
 ### Added

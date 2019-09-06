@@ -5,7 +5,7 @@
   "license": "BSD-3-Clause",
   "main": "index.js",
   "bin": {
-    "hl": "./bin/hl.js"
+    "hl": "./bin/hl"
   },
   "scripts": {
     "test": "cross-env NODE_ENV=test mocha -t 30000 -R ${REPORTER:-spec} test/unit/index.js",
