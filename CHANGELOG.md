@@ -1,5 +1,8 @@
 # hashlink ChangeLog
 
+### Fixed
+- Distribute hl binary.
+
 ## 0.10.2 - 2019-09-06
 
 ### Fixed
