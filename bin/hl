@@ -16,7 +16,8 @@ program
   .description('Encode a hashlink given a URL and/or data.')
   .option('-u, --url <location>', 'target URL for the hashlink', collect, [])
   .option('-l, --legacy', 'encode a hashlink for a legacy URL')
-  .option('-h, --hash <algorithm>', 'cryptographic hash algorithm', 'sha2-256')
+  .option('-a, --hash <algorithm>',
+    'cryptographic hash algorithm [sha2-256, blake2b-64]', 'sha2-256')
   .option('-b, --base <encoding>', 'base encoding', 'base58-btc')
   .action(async (dataFile, options) => {
     try {
