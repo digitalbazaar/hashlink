@@ -35,7 +35,7 @@ export class Hashlink {
    * @returns {Promise<string>} Resolves to a string that is a hashlink.
    */
   async encode({data, url, codecs, meta = {}}) {
-    // ensure data or url are provided
+    // ensure data or url is provided
     if(data === undefined && url === undefined) {
       throw new Error('Either `data` or `url` must be provided.');
     }
@@ -58,8 +58,9 @@ export class Hashlink {
         }
       });
 
-    // merge meta options with url
-    meta = {...meta, url};
+      // merge meta options with url
+      meta = {...meta, url};
+    }
 
     // generate the encoded cryptographic hash
     const outputData = await codecs.reduce(async (output, codec) => {
