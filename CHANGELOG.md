@@ -1,5 +1,13 @@
 # hashlink ChangeLog
 
+## 0.11.0 - 2019-09-11
+
+### Fixed
+- Fix a bug when passing a sha2-256 buffer during the encoding process.
+
+### Changed
+- **BREAKING**: Rename hl.create to hl.encode to bring it inline w/ hl.decode().
+
 ## 0.10.4 - 2019-09-06
 
 ### Fixed
