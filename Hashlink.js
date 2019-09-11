@@ -46,7 +46,7 @@ export class Hashlink {
     }
 
     if(url) {
-      // ensure url are an array
+      // ensure url is an array
       if(!Array.isArray(url)) {
         url = [url];
       }
