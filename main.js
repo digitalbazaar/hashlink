@@ -59,8 +59,8 @@ async function encode({data, urls, url,
  *
  * @returns {Object} Returns an object with the decoded hashlink values.
  */
-function decode({hashlink}) {
-  throw new Error('Not implemented.');
+async function decode({hashlink}) {
+  return await hlDefault.decode({hashlink});
 }
 
 /**
