@@ -41,14 +41,14 @@ describe('hashlink library', function() {
   }
 
   describe(`Hashlink class`, function() {
-    describe(`create() [sha2-256]`, function() {
+    describe(`encode() [sha2-256]`, function() {
       // setup the encoder/decoder
       const hlInstance = new Hashlink();
       hlInstance.use(new defaultCodecs.MultihashSha2256());
       hlInstance.use(new defaultCodecs.MultibaseBase58btc());
 
-      it('create({data, codecs}) should create a hashlink', async function() {
-        const result = await hlInstance.create({
+      it('encode({data, codecs}) should encode a hashlink', async function() {
+        const result = await hlInstance.encode({
           data: testData,
           codecs: ['mh-sha2-256', 'mb-base58-btc']
         });
@@ -57,9 +57,9 @@ describe('hashlink library', function() {
           'hl:zQmNbCYUrvaVfy6w9b5W3SVTP2newPK5FoeY37QurUEUydH');
       });
 
-      it('create({data, urls, codecs}) should create a hashlink',
+      it('encode({data, urls, codecs}) should encode a hashlink',
         async function() {
-        const result = await hlInstance.create({
+        const result = await hlInstance.encode({
           data: testData,
           urls: [exampleUrl],
           codecs: ['mh-sha2-256', 'mb-base58-btc']
@@ -70,9 +70,9 @@ describe('hashlink library', function() {
           'z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy');
       });
 
-      it('create({data, urls, meta, codecs}) should create a hashlink',
+      it('encode({data, urls, meta, codecs}) should encode a hashlink',
         async function() {
-        const result = await hlInstance.create({
+        const result = await hlInstance.encode({
           data: testData,
           urls: [exampleUrl],
           meta: {
@@ -87,14 +87,14 @@ describe('hashlink library', function() {
       });
     });
 
-    describe(`create API (blake2b-64)`, function() {
+    describe(`encode() [blake2b-64]`, function() {
       // setup the encoder/decoder
       const hlInstance = new Hashlink();
       hlInstance.use(new defaultCodecs.MultihashBlake2b64());
       hlInstance.use(new defaultCodecs.MultibaseBase58btc());
 
-      it('create({data, codecs}) should create a hashlink', async function() {
-        const result = await hlInstance.create({
+      it('encode({data, codecs}) should encode a hashlink', async function() {
+        const result = await hlInstance.encode({
           data: testData,
           codecs: ['mh-blake2b-64', 'mb-base58-btc']
         });
@@ -102,9 +102,9 @@ describe('hashlink library', function() {
         result.should.equal('hl:zm9YZpCjPLPJ4Epc');
       });
 
-      it('create({data, urls, codecs}) should create a hashlink',
+      it('encode({data, urls, codecs}) should encode a hashlink',
         async function() {
-        const result = await hlInstance.create({
+        const result = await hlInstance.encode({
           data: testData,
           urls: [exampleUrl],
           codecs: ['mh-blake2b-64', 'mb-base58-btc']
@@ -115,9 +115,9 @@ describe('hashlink library', function() {
           'z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy');
       });
 
-      it('create({data, urls, meta, codecs}) should create a hashlink',
+      it('encode({data, urls, meta, codecs}) should encode a hashlink',
         async function() {
-        const result = await hlInstance.create({
+        const result = await hlInstance.encode({
           data: testData,
           urls: [exampleUrl],
           meta: {
@@ -132,47 +132,51 @@ describe('hashlink library', function() {
       });
     });
 
-    describe(`create() [blake2b-64]`, function() {
+    describe(`encode() [urdna2015]`, function() {
       // setup the encoder/decoder
       const hlInstance = new Hashlink();
+      hlInstance.use(new Urdna2015());
       hlInstance.use(new defaultCodecs.MultihashBlake2b64());
       hlInstance.use(new defaultCodecs.MultibaseBase58btc());
 
-      it('create({data, codecs}) should create a hashlink', async function() {
-        const result = await hlInstance.create({
-          data: testData,
-          codecs: ['mh-blake2b-64', 'mb-base58-btc']
+      it('encode({data, codecs}) should encode a hashlink', async function() {
+        const result = await hlInstance.encode({
+          data: stringToUint8Array(JSON.stringify(jsonldData)),
+          codecs: ['urdna2015', 'mh-blake2b-64', 'mb-base58-btc'],
+          transform: ['urdna2015']
         });
 
-        result.should.equal('hl:zm9YZpCjPLPJ4Epc');
+        result.should.equal('hl:zm9YaHWNePhdaQ2J');
       });
 
-      it('create({data, urls, codecs}) should create a hashlink',
+      it('encode({data, urls, codecs}) should encode a hashlink',
         async function() {
-        const result = await hlInstance.create({
-          data: testData,
+        const result = await hlInstance.encode({
+          data: stringToUint8Array(JSON.stringify(jsonldData)),
           urls: [exampleUrl],
-          codecs: ['mh-blake2b-64', 'mb-base58-btc']
+          codecs: ['urdna2015', 'mh-blake2b-64', 'mb-base58-btc'],
+          transform: ['urdna2015']
         });
 
         result.should.equal(
-          'hl:zm9YZpCjPLPJ4Epc:' +
+          'hl:zm9YaHWNePhdaQ2J:' +
           'z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy');
       });
 
-      it('create({data, urls, meta, codecs}) should create a hashlink',
+      it('encode({data, urls, meta, codecs}) should encode a hashlink',
         async function() {
-        const result = await hlInstance.create({
-          data: testData,
+        const result = await hlInstance.encode({
+          data: stringToUint8Array(JSON.stringify(jsonldData)),
           urls: [exampleUrl],
           meta: {
             'content-type': 'text/plain'
           },
-          codecs: ['mh-blake2b-64', 'mb-base58-btc']
+          codecs: ['urdna2015', 'mh-blake2b-64', 'mb-base58-btc'],
+          transform: ['urdna2015']
         });
 
         result.should.equal(
-          'hl:zm9YZpCjPLPJ4Epc:' +
+          'hl:zm9YaHWNePhdaQ2J:' +
           'zCwPSdabLuj3jue1qYujzunnKwpL4myKdyeqySyFhnzZ8qdfW3bb6W8dVdRu');
       });
     });
@@ -238,7 +242,7 @@ describe('hashlink library', function() {
       hlInstance.use(new defaultCodecs.MultibaseBase58btc());
 
       it('use() with custom JSON-LD transform', async function() {
-        const result = await hlInstance.create({
+        const result = await hlInstance.encode({
           data: stringToUint8Array(JSON.stringify(jsonldData)),
           codecs: ['urdna2015', 'mh-sha2-256', 'mb-base58-btc']
         });
@@ -250,10 +254,10 @@ describe('hashlink library', function() {
   });
 
   describe(`convenience functionality`, function() {
-    describe(`create()`, function() {
+    describe(`encode()`, function() {
 
-      it('create({data}) should create a hashlink', async function() {
-        const result = await hl.create({
+      it('encode({data}) should encode a hashlink', async function() {
+        const result = await hl.encode({
           data: testData
         });
 
@@ -261,9 +265,9 @@ describe('hashlink library', function() {
           'hl:zQmNbCYUrvaVfy6w9b5W3SVTP2newPK5FoeY37QurUEUydH');
       });
 
-      it('create({data, urls}) should create a hashlink',
+      it('encode({data, urls}) should encode a hashlink',
         async function() {
-        const result = await hl.create({
+        const result = await hl.encode({
           data: testData,
           urls: [exampleUrl]
         });
@@ -273,9 +277,9 @@ describe('hashlink library', function() {
           'z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy');
       });
 
-      it('create({data, urls, meta}) should create a hashlink',
+      it('encode({data, urls, meta}) should encode a hashlink',
         async function() {
-        const result = await hl.create({
+        const result = await hl.encode({
           data: testData,
           urls: [exampleUrl],
           meta: {

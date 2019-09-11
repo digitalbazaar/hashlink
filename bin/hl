@@ -10,11 +10,11 @@ function collect(value, previous) {
 }
 
 program
-  .command('create')
-  .alias('c')
-  .description('Create a hashlink given a URL and/or data.')
+  .command('encode')
+  .alias('e')
+  .description('Encode a hashlink given a URL and/or data.')
   .option('-u, --url <location>', 'target URL for the hashlink', collect, [])
-  .option('-l, --legacy', 'create a hashlink for a legacy URL')
+  .option('-l, --legacy', 'encode a hashlink for a legacy URL')
   .option('-h, --hash <algorithm>', 'cryptographic hash algorithm', 'sha2-256')
   .option('-b, --base <encoding>', 'base encoding', 'base58-btc')
   .action(async (dataFile, options) => {
@@ -29,7 +29,7 @@ program
       }
       // generate codecs from command line options
       codecs = ['mh-' + options.hash, 'mb-' + options.base];
-      const hashlink = await hl.create({data, urls, codecs, meta});
+      const hashlink = await hl.encode({data, urls, codecs, meta});
 
       if(options.legacy) {
         // print out a legacy hashlink
@@ -52,9 +52,9 @@ program
     console.log();
     console.log('  Examples: ');
     console.log();
-    console.log('    hl create hw.txt');
-    console.log('    hl create --url "https://example.com/hw.txt"');
-    console.log('    hl create --url "https://example.com/hw.txt" hw.txt');
+    console.log('    hl encode hw.txt');
+    console.log('    hl encode --url "https://example.com/hw.txt"');
+    console.log('    hl encode --url "https://example.com/hw.txt" hw.txt');
     console.log();
   });
 

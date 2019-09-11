@@ -20,7 +20,7 @@
       // get element to write hashlink value into
       const hlElement = document.getElementById('hlvalue');
       // write hashlink value into element
-      hlElement.innerHTML = await window.hashlink.create({data});
+      hlElement.innerHTML = await window.hashlink.encode({data});
     }
   </script>
 

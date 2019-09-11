@@ -37,6 +37,8 @@ class MultihashSha2256 {
     mhsha2256.set(this.identifier, 0);
     mhsha2256.set(sha2256, this.identifier.byteLength);
 
+    console.log("SHA2256 ENCODE", "INPUT", input, "SHA2256", sha2256, "MHSHA2256", mhsha2256);
+
     return mhsha2256;
   }
 }

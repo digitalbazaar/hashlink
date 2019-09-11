@@ -86,33 +86,33 @@ npm install
 
 Use on the command line, or see the API section below.
 
-### Creating a Hashlink
+### Encoding a Hashlink
 
-There are a number of ways you can create a hashlink. The simplest way is to
+There are a number of ways you can encode a hashlink. The simplest way is to
 provide the data directly.
 
 ```bash
-./bin/hl create hw.txt
+./bin/hl encode hw.txt
 ```
 
-You can create a hashlink from any data published on the Web:
+You can encode a hashlink from any data published on the Web:
 
 ```bash
-./bin/hl create --url "https://example.com/hw.txt"
+./bin/hl encode --url "https://example.com/hw.txt"
 ```
 
-You can also create a hashlink from data on disk and specify the location on
+You can also encode a hashlink from data on disk and specify the location on
 the web that the data will be published to:
 
 ```bash
-./bin/hl create --url "https://example.com/hw.txt" hw.txt
+./bin/hl encode --url "https://example.com/hw.txt" hw.txt
 ```
 
 Hashlinks are also backwards compatible with legacy URL schemes, which enables
 you to use query parameters to encode the hashlink information:
 
 ```bash
-./bin/hl create --legacy --url "https://example.com/hw.txt" hw.txt
+./bin/hl encode --legacy --url "https://example.com/hw.txt" hw.txt
 ```
 
 ### Decoding a Hashlink
@@ -158,31 +158,31 @@ via a simple script tag:
 The rest of the examples in this section assume a node.js environment, but
 all API calls listed below are also available in the browser version.
 
-### Creating a Hashlink
+### Encoding a Hashlink
 
-You can create a hashlink from an existing URL (**coming soon**):
+You can encode a hashlink from an existing URL (**coming soon**):
 
 ```js
 const hl = require('hashlink');
 
 const url = 'https://example.com/hw.txt';
 
-// create a hashlink by fetching the URL content and hashing it
-const hlUrl = await hl.create({url});
+// encode a hashlink by fetching the URL content and hashing it
+const hlUrl = await hl.encode({url});
 
 // print out the hashlink
 console.log(hlUrl);
 ```
 
-You can create a hashlink from data:
+You can encode a hashlink from data:
 
 ```js
 const hl = require('hashlink');
 
-// create a hashlink using data to be published at a URL
+// encode a hashlink using data to be published at a URL
 const data = fs.readFileSync('hw.txt');
 const url = 'https://example.com/hw.txt';
-const hlUrl = await hl.create({data, url});
+const hlUrl = await hl.encode({data, url});
 
 // print out the hashlink
 console.log(hlUrl);
@@ -198,12 +198,12 @@ const {Urdna2015} = require('hashlink-jsonld');
 const hl = new Hashlink();
 hl.use(new Urdna2015());
 
-// create a hashlink using canonicalized data published at a URL
+// encode a hashlink using canonicalized data published at a URL
 const url = 'https://example.com/credential.jsonld';
 // encode the input data using urdna2015 canonicalization algorithm and
 // then hash using blake2b with a 64-bit output
 const codecs = ['urdna2015', 'blake2b-64'];
-const hlUrl = await hl.create({
+const hlUrl = await hl.encode({
   url,
   codecs,
   'content-type': 'application/ld+json'
@@ -255,7 +255,7 @@ const {Urdna2016} = require('hashlink-jsonld');
 const hl = new Hashlink();
 hl.use(new Urdna2015());
 
-// create a hashlink using canonicalized data published at a URL
+// encode a hashlink using canonicalized data published at a URL
 const hlUrl = 'hl:zQmWvQxTqbG2Z9HPJgG57jjwR154cKhbtJenbyYTWkjgF3e:' +
   'zuh8iaLobXC8g9tfma1CSTtYBakXeSTkHrYA5hmD4F7dCLw8XYwZ1GWyJ3zwF';
 const valid = await hl.verify({hashlink: hlUrl});
@@ -274,7 +274,7 @@ defaults work just fine.
 
 ```js
 const hl = require('hashlink');
-const hlUrl = await hl.create({url: 'https://example.com/hw.txt'});
+const hlUrl = await hl.encode({url: 'https://example.com/hw.txt'});
 ```
 
 In some cases, however, a developer will need to extend the default
@@ -302,13 +302,13 @@ class Urdna2015 {
 const hl = new Hashlink();
 hl.use(new Urdna2015());
 
-// create a hashlink using canonicalized data published at a URL
+// encode a hashlink using canonicalized data published at a URL
 const url = 'https://example.com/credential.jsonld';
 
 // encode the input data using urdna2015 canonicalization algorithm and
 // then hash using blake2b with a 64-bit output
 const codecs = ['urdna2015', 'blake2b-64'];
-const hlUrl = await hl.create({
+const hlUrl = await hl.encode({
   url,
   codecs,
   'content-type': 'application/ld+json'

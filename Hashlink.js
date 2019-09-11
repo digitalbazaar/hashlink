@@ -8,7 +8,7 @@ import {TextDecoder, stringToUint8Array} from './util.js';
 
 export class Hashlink {
   /**
-   * Creates a new Hashlink instance that can be used to encode or decode
+   * Encodes a new Hashlink instance that can be used to encode or decode
    * data at URLs.
    *
    * @returns {Hashlink} A Hashlink used to encode and decode cryptographic
@@ -19,13 +19,13 @@ export class Hashlink {
   }
 
   /**
-   * Creates a hashlink. If only a `url` parameter is provided, the URL is
+   * Encodes a hashlink. If only a `url` parameter is provided, the URL is
    * fetched, transformed, and encoded into a hashlink. If a data parameter
-   * is provided, the hashlink is created from the data.
+   * is provided, the hashlink is encoded from the data.
    *
-   * @param {Object} options - The options for the create operation.
+   * @param {Object} options - The options for the encode operation.
    * @param {Uint8Array} [options.data] - The data associated with the given
-   *   URL. If provided, this data is used to create the cryptographic hash.
+   *   URL. If provided, this data is used to encode the cryptographic hash.
    * @param {Array} options.codecs - One or more codecs that should be used
    *   to encode the data.
    * @param {Array} [options.urls] - One or more URLs that contain the data
@@ -35,7 +35,7 @@ export class Hashlink {
    *
    * @returns {Promise<string>} Resolves to a string that is a hashlink.
    */
-  async create({data, urls, codecs, meta = {}}) {
+  async encode({data, urls, codecs, meta = {}}) {
     // ensure data or urls are provided
     if(data === undefined && urls === undefined) {
       throw new Error('Either `data` or `urls` must be provided.');
@@ -46,7 +46,7 @@ export class Hashlink {
       throw new Error('The hashlink creation `codecs` must be provided.');
     }
 
-    if(urls) {
+    if(urls !== undefined) {
       // ensure urls are an array
       if(!Array.isArray(urls)) {
         urls = [urls];
@@ -58,10 +58,10 @@ export class Hashlink {
           throw new Error(`URL "${url}" must be a string.`);
         }
       });
-    }
 
-    // merge meta options with urls
-    meta = {...meta, url: urls};
+      // merge meta options with urls
+      meta = {...meta, url: urls};
+    }
 
     // generate the encoded cryptographic hash
     const outputData = await codecs.reduce(async (output, codec) => {
@@ -69,6 +69,8 @@ export class Hashlink {
       if(encoder === undefined) {
         throw new Error(`Unknown cryptographic hash encoder "${encoder}".`);
       }
+
+      console.log("RUNNING ENCODER", encoder);
 
       return encoder.encode(await output);
     }, data);
@@ -101,6 +103,8 @@ export class Hashlink {
       hashlink += ':' + mbCborData;
     }
 
+    console.log("DATA TO ENCODE", "DATA", data, "URLS", urls, "CODECS", codecs, "META", meta, "METADATA", metadata);
+
     return hashlink;
   }
 
@@ -108,7 +112,7 @@ export class Hashlink {
    * Decodes a hashlink resulting in an object with key-value pairs
    * representing the values encoded in the hashlink.
    *
-   * @param {Object} options - The options for the create operation.
+   * @param {Object} options - The options for the encode operation.
    * @param {string} options.hashlink - The encoded hashlink value to decode.
    *
    * @returns {Object} Returns an object with the decoded hashlink values.
@@ -120,7 +124,7 @@ export class Hashlink {
   /**
    * Verifies a hashlink resulting in a simple true or false value.
    *
-   * @param {Object} options - The options for the create operation.
+   * @param {Object} options - The options for the encode operation.
    * @param {string} options.hashlink - The encoded hashlink value to verify.
    * @param {string} options.data - The data to use for the hashlink.
    * @param {Array} options.resolvers - An array of Objects with key-value
@@ -162,10 +166,11 @@ export class Hashlink {
     codecs.push(multihashDecoder.algorithm, multibaseDecoder.algorithm);
 
     // generate the hashlink
-    const generatedHashlink = await this.create({data, codecs});
+    const generatedHashlink = await this.encode({data, codecs});
     const generatedComponents = generatedHashlink.split(':');
 
     // check to see if the encoded hashes match
+    console.log("DATA", data, "EXPECTED", components[1], "GOT", generatedComponents[1]);
     return components[1] === generatedComponents[1];
   }
 

@@ -12,7 +12,7 @@ import {Hashlink} from './Hashlink.js';
 // setup exports for this module
 export {Hashlink} from './Hashlink.js';
 export {
-  create,
+  encode,
   decode,
   verify,
 };
@@ -24,13 +24,13 @@ hlDefault.use(new defaultCodecs.MultihashBlake2b64());
 hlDefault.use(new defaultCodecs.MultibaseBase58btc());
 
 /**
- * Creates a hashlink. If only a `url` parameter is provided, the URL is
+ * Encodes a hashlink. If only a `url` parameter is provided, the URL is
  * fetched, transformed, and encoded into a hashlink. If a data parameter
- * is provided, the hashlink is created from the data.
+ * is provided, the hashlink is encoded from the data.
  *
- * @param {Object} options - The options for the create operation.
+ * @param {Object} options - The options for the encode operation.
  * @param {Uint8Array} options.data - The data associated with the given URL. If
- *   provided, this data is used to create the cryptographic hash.
+ *   provided, this data is used to encode the cryptographic hash.
  * @param {Array} options.urls - One or more URLs that contain the data
  *   referred to by the hashlink.
  * @param {Array} options.codecs - One or more URLs that contain the data
@@ -40,21 +40,21 @@ hlDefault.use(new defaultCodecs.MultibaseBase58btc());
  *
  * @returns {Promise<string>} Resolves to a string that is a hashlink.
  */
-async function create({data, urls, url,
+async function encode({data, urls, url,
   codecs = ['mh-sha2-256', 'mb-base58-btc'], meta = {}}) {
 
   if(url && !urls) {
     urls = [url];
   }
 
-  return await hlDefault.create({data, urls, codecs, meta});
+  return await hlDefault.encode({data, urls, codecs, meta});
 }
 
 /**
  * Decodes a hashlink resulting in an object with key-value pairs
  * representing the values encoded in the hashlink.
  *
- * @param {Object} options - The options for the create operation.
+ * @param {Object} options - The options for the encode operation.
  * @param {string} options.hashlink - The encoded hashlink value to decode.
  *
  * @returns {Object} Returns an object with the decoded hashlink values.
@@ -66,7 +66,7 @@ function decode({hashlink}) {
 /**
  * Verifies a hashlink resulting in a simple true or false value.
  *
- * @param {Object} options - The options for the create operation.
+ * @param {Object} options - The options for the encode operation.
  * @param {string} options.hashlink - The encoded hashlink value to verify.
  * @param {Uint8Array} options.data - Optional data to use when verifying
  *   hashlink.
