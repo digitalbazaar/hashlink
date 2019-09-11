@@ -70,8 +70,6 @@ export class Hashlink {
         throw new Error(`Unknown cryptographic hash encoder "${encoder}".`);
       }
 
-      console.log("RUNNING ENCODER", encoder);
-
       return encoder.encode(await output);
     }, data);
 
@@ -102,8 +100,6 @@ export class Hashlink {
         this.registeredCodecs[baseEncodingCodec].encode(cborData));
       hashlink += ':' + mbCborData;
     }
-
-    console.log("DATA TO ENCODE", "DATA", data, "URLS", urls, "CODECS", codecs, "META", meta, "METADATA", metadata);
 
     return hashlink;
   }
@@ -170,7 +166,6 @@ export class Hashlink {
     const generatedComponents = generatedHashlink.split(':');
 
     // check to see if the encoded hashes match
-    console.log("DATA", data, "EXPECTED", components[1], "GOT", generatedComponents[1]);
     return components[1] === generatedComponents[1];
   }
 
