@@ -155,7 +155,7 @@ export class Hashlink {
       if(meta.has(0x0f)) {
         decodedValue.meta.url = meta.get(0x0f);
       }
-      if(meta.has(0x0e)['content-type']) {
+      if(meta.has(0x0e)) {
         decodedValue.meta['content-type'] = meta.get(0x0e);
       }
       if(meta.has(0x0d)) {
