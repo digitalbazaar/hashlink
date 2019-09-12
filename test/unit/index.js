@@ -153,7 +153,7 @@ describe('hashlink library', function() {
         async function() {
         const result = await hlInstance.encode({
           data: stringToUint8Array(JSON.stringify(jsonldData)),
-          urla: [exampleUrl],
+          url: [exampleUrl],
           codecs: ['urdna2015', 'mh-blake2b-64', 'mb-base58-btc'],
           transform: ['urdna2015']
         });

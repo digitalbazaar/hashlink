@@ -27,8 +27,8 @@ export class Hashlink {
    *   URL. If provided, this data is used to encode the cryptographic hash.
    * @param {Array<object>} codecs - One or more codecs that should be used
    *   to encode the data.
-   * @param {string|Array} [url] - One or more URLs that contain the data
-   *   referred to by the hashlink.
+   * @param {string|Array<string>} [url] - One or more URLs that contain the
+   *   data referred to by the hashlink.
    * @param {object} [meta={}] - A set of key-value metadata that will be
    *   encoded into the hashlink.
    *

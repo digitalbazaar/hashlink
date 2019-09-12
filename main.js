@@ -29,10 +29,10 @@ const DEFAULT_CODEC_IDS = ['mh-sha2-256', 'mb-base58-btc'];
  *
  * @param {Uint8Array} data - The data associated with the given URL. If
  *   provided, this data is used to encode the cryptographic hash.
- * @param {string|Array} url - One or more URLs that resolve to the data
+ * @param {string|Array<string>} url - One or more URLs that resolve to the data
  *   referred to by the hashlink.
- * @param {Array} [codecs] - One or more URLs that contain the data
- *   referred to by the hashlink.
+ * @param {Array} [codecs] - One or more codecs that should be used
+ *   to encode the data.
  * @param {object} [meta={}] - A set of key-value metadata that will be
  *   encoded into the hashlink.
  *
@@ -51,7 +51,6 @@ async function encode(options) {
     meta = {};
   } else {
     data = options.data;
-    urls = options.urls;
     url = options.url;
     codecs = options.codecs || DEFAULT_CODEC_IDS;
     meta = options.meta || {};
@@ -66,7 +65,7 @@ async function encode(options) {
     throw new Error('Fetching of data from urls coming soon.');
   }
 
-  return hlDefault.encode({data, urls, codecs, meta});
+  return hlDefault.encode({data, url, codecs, meta});
 }
 
 /**
