@@ -27,19 +27,20 @@ const DEFAULT_CODEC_IDS = ['mh-sha2-256', 'mb-base58-btc'];
  * fetched, transformed, and encoded into a hashlink. If a data parameter
  * is provided, the hashlink is encoded from the data.
  *
- * @param {Uint8Array} data - The data associated with the given URL. If
+ * @param {object} options
+ * @param {Uint8Array} options.data - The data associated with the given URL. If
  *   provided, this data is used to encode the cryptographic hash.
- * @param {string|Array<string>} url - One or more URLs that resolve to the data
- *   referred to by the hashlink.
- * @param {Array} [codecs] - One or more codecs that should be used
+ * @param {string|Array<string>} options.url - One or more URLs that resolve to
+ *   the data referred to by the hashlink.
+ * @param {Array} [options.codecs] - One or more codecs that should be used
  *   to encode the data.
- * @param {object} [meta={}] - A set of key-value metadata that will be
+ * @param {object} [options.meta={}] - A set of key-value metadata that will be
  *   encoded into the hashlink.
  *
  * @returns {Promise<string>} Resolves to a string that is a hashlink.
  */
 async function encode(options) {
-  let data, urls, url, codecs, meta;
+  let data, url, codecs, meta;
 
   if(!options) {
     throw new Error('Urls and/or data params are required.');
@@ -54,10 +55,6 @@ async function encode(options) {
     url = options.url;
     codecs = options.codecs || DEFAULT_CODEC_IDS;
     meta = options.meta || {};
-  }
-
-  if(url && !urls) {
-    urls = [url];
   }
 
   if(!data) {
