@@ -59,32 +59,32 @@ describe('hashlink library', function() {
 
       it('encode({data, url, codecs}) should encode a hashlink',
         async function() {
-        const result = await hlInstance.encode({
-          data: testData,
-          url: [exampleUrl],
-          codecs: ['mh-sha2-256', 'mb-base58-btc']
-        });
+          const result = await hlInstance.encode({
+            data: testData,
+            url: [exampleUrl],
+            codecs: ['mh-sha2-256', 'mb-base58-btc']
+          });
 
-        result.should.equal(
-          'hl:zQmNbCYUrvaVfy6w9b5W3SVTP2newPK5FoeY37QurUEUydH:' +
-          'z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy');
-      });
+          result.should.equal(
+            'hl:zQmNbCYUrvaVfy6w9b5W3SVTP2newPK5FoeY37QurUEUydH:' +
+            'z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy');
+        });
 
       it('encode({data, url, meta, codecs}) should encode a hashlink',
         async function() {
-        const result = await hlInstance.encode({
-          data: testData,
-          url: [exampleUrl],
-          meta: {
-            'content-type': 'text/plain'
-          },
-          codecs: ['mh-sha2-256', 'mb-base58-btc']
-        });
+          const result = await hlInstance.encode({
+            data: testData,
+            url: [exampleUrl],
+            meta: {
+              'content-type': 'text/plain'
+            },
+            codecs: ['mh-sha2-256', 'mb-base58-btc']
+          });
 
-        result.should.equal(
-          'hl:zQmNbCYUrvaVfy6w9b5W3SVTP2newPK5FoeY37QurUEUydH:' +
-          'zCwPSdabLuj3jue1qYujzunnKwpL4myKdyeqySyFhnzZ8qdfW3bb6W8dVdRu');
-      });
+          result.should.equal(
+            'hl:zQmNbCYUrvaVfy6w9b5W3SVTP2newPK5FoeY37QurUEUydH:' +
+            'zCwPSdabLuj3jue1qYujzunnKwpL4myKdyeqySyFhnzZ8qdfW3bb6W8dVdRu');
+        });
     });
 
     describe(`encode() [blake2b-64]`, function() {
@@ -104,32 +104,32 @@ describe('hashlink library', function() {
 
       it('encode({data, url, codecs}) should encode a hashlink',
         async function() {
-        const result = await hlInstance.encode({
-          data: testData,
-          url: [exampleUrl],
-          codecs: ['mh-blake2b-64', 'mb-base58-btc']
-        });
+          const result = await hlInstance.encode({
+            data: testData,
+            url: [exampleUrl],
+            codecs: ['mh-blake2b-64', 'mb-base58-btc']
+          });
 
-        result.should.equal(
-          'hl:zm9YZpCjPLPJ4Epc:' +
-          'z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy');
-      });
+          result.should.equal(
+            'hl:zm9YZpCjPLPJ4Epc:' +
+            'z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy');
+        });
 
       it('encode({data, url, meta, codecs}) should encode a hashlink',
         async function() {
-        const result = await hlInstance.encode({
-          data: testData,
-          url: [exampleUrl],
-          meta: {
-            'content-type': 'text/plain'
-          },
-          codecs: ['mh-blake2b-64', 'mb-base58-btc']
-        });
+          const result = await hlInstance.encode({
+            data: testData,
+            url: [exampleUrl],
+            meta: {
+              'content-type': 'text/plain'
+            },
+            codecs: ['mh-blake2b-64', 'mb-base58-btc']
+          });
 
-        result.should.equal(
-          'hl:zm9YZpCjPLPJ4Epc:' +
-          'zCwPSdabLuj3jue1qYujzunnKwpL4myKdyeqySyFhnzZ8qdfW3bb6W8dVdRu');
-      });
+          result.should.equal(
+            'hl:zm9YZpCjPLPJ4Epc:' +
+            'zCwPSdabLuj3jue1qYujzunnKwpL4myKdyeqySyFhnzZ8qdfW3bb6W8dVdRu');
+        });
     });
 
     describe(`encode() [urdna2015]`, function() {
@@ -151,34 +151,34 @@ describe('hashlink library', function() {
 
       it('encode({data, url, codecs}) should encode a hashlink',
         async function() {
-        const result = await hlInstance.encode({
-          data: stringToUint8Array(JSON.stringify(jsonldData)),
-          url: [exampleUrl],
-          codecs: ['urdna2015', 'mh-blake2b-64', 'mb-base58-btc'],
-          transform: ['urdna2015']
-        });
+          const result = await hlInstance.encode({
+            data: stringToUint8Array(JSON.stringify(jsonldData)),
+            url: [exampleUrl],
+            codecs: ['urdna2015', 'mh-blake2b-64', 'mb-base58-btc'],
+            transform: ['urdna2015']
+          });
 
-        result.should.equal(
-          'hl:zm9YaHWNePhdaQ2J:' +
-          'z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy');
-      });
+          result.should.equal(
+            'hl:zm9YaHWNePhdaQ2J:' +
+            'z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy');
+        });
 
       it('encode({data, url, meta, codecs}) should encode a hashlink',
         async function() {
-        const result = await hlInstance.encode({
-          data: stringToUint8Array(JSON.stringify(jsonldData)),
-          url: [exampleUrl],
-          meta: {
-            'content-type': 'text/plain'
-          },
-          codecs: ['urdna2015', 'mh-blake2b-64', 'mb-base58-btc'],
-          transform: ['urdna2015']
-        });
+          const result = await hlInstance.encode({
+            data: stringToUint8Array(JSON.stringify(jsonldData)),
+            url: [exampleUrl],
+            meta: {
+              'content-type': 'text/plain'
+            },
+            codecs: ['urdna2015', 'mh-blake2b-64', 'mb-base58-btc'],
+            transform: ['urdna2015']
+          });
 
-        result.should.equal(
-          'hl:zm9YaHWNePhdaQ2J:' +
-          'zCwPSdabLuj3jue1qYujzunnKwpL4myKdyeqySyFhnzZ8qdfW3bb6W8dVdRu');
-      });
+          result.should.equal(
+            'hl:zm9YaHWNePhdaQ2J:' +
+            'zCwPSdabLuj3jue1qYujzunnKwpL4myKdyeqySyFhnzZ8qdfW3bb6W8dVdRu');
+        });
     });
 
     describe(`verify() [sha2-256]`, function() {
@@ -215,24 +215,24 @@ describe('hashlink library', function() {
 
     describe(`verify() [urdna2015]`,
       function() {
-      // setup the encoder/decoder
-      const hlInstance = new Hashlink();
-      hlInstance.use(new Urdna2015());
-      hlInstance.use(new defaultCodecs.MultihashSha2256());
-      hlInstance.use(new defaultCodecs.MultibaseBase58btc());
+        // setup the encoder/decoder
+        const hlInstance = new Hashlink();
+        hlInstance.use(new Urdna2015());
+        hlInstance.use(new defaultCodecs.MultihashSha2256());
+        hlInstance.use(new defaultCodecs.MultibaseBase58btc());
 
-      it('verify({data, hashlink}) should verify a hashlink',
-        async function() {
-        const result = await hlInstance.verify({
-          data: stringToUint8Array(JSON.stringify(jsonldData)),
-          hashlink:
-            'hl:zQmVcHtE3hUCF3s6fgjohUL3ANsKGnmRC9UsEaAjZuvgzdc:' +
-            'zER21ZLCmb3bkKNtm8g'
-        });
+        it('verify({data, hashlink}) should verify a hashlink',
+          async function() {
+            const result = await hlInstance.verify({
+              data: stringToUint8Array(JSON.stringify(jsonldData)),
+              hashlink:
+                'hl:zQmVcHtE3hUCF3s6fgjohUL3ANsKGnmRC9UsEaAjZuvgzdc:' +
+                'zER21ZLCmb3bkKNtm8g'
+            });
 
-        chai.expect(result).to.equal(true);
+            chai.expect(result).to.equal(true);
+          });
       });
-    });
 
     describe(`use()`, function() {
       // setup the encoder/decoder
@@ -267,30 +267,30 @@ describe('hashlink library', function() {
 
       it('encode({data, url}) should encode a hashlink',
         async function() {
-        const result = await hl.encode({
-          data: testData,
-          url: [exampleUrl]
-        });
+          const result = await hl.encode({
+            data: testData,
+            url: [exampleUrl]
+          });
 
-        result.should.equal(
-          'hl:zQmNbCYUrvaVfy6w9b5W3SVTP2newPK5FoeY37QurUEUydH:' +
-          'z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy');
-      });
+          result.should.equal(
+            'hl:zQmNbCYUrvaVfy6w9b5W3SVTP2newPK5FoeY37QurUEUydH:' +
+            'z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy');
+        });
 
       it('encode({data, url, meta}) should encode a hashlink',
         async function() {
-        const result = await hl.encode({
-          data: testData,
-          url: [exampleUrl],
-          meta: {
-            'content-type': 'text/plain'
-          }
-        });
+          const result = await hl.encode({
+            data: testData,
+            url: [exampleUrl],
+            meta: {
+              'content-type': 'text/plain'
+            }
+          });
 
-        result.should.equal(
-          'hl:zQmNbCYUrvaVfy6w9b5W3SVTP2newPK5FoeY37QurUEUydH:' +
-          'zCwPSdabLuj3jue1qYujzunnKwpL4myKdyeqySyFhnzZ8qdfW3bb6W8dVdRu');
-      });
+          result.should.equal(
+            'hl:zQmNbCYUrvaVfy6w9b5W3SVTP2newPK5FoeY37QurUEUydH:' +
+            'zCwPSdabLuj3jue1qYujzunnKwpL4myKdyeqySyFhnzZ8qdfW3bb6W8dVdRu');
+        });
     });
 
     describe(`verify() [sha2-256]`, function() {
