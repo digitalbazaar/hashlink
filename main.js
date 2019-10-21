@@ -3,11 +3,8 @@
  */
 'use strict';
 
-//import * as base58 from './base58.js';
-//import crypto from './crypto.js';
 import * as defaultCodecs from './codecs.js';
 import {Hashlink} from './Hashlink.js';
-//import {stringToUint8Array} from './util.js';
 
 // setup exports for this module
 export {Hashlink} from './Hashlink.js';
@@ -23,41 +20,58 @@ hlDefault.use(new defaultCodecs.MultihashSha2256());
 hlDefault.use(new defaultCodecs.MultihashBlake2b64());
 hlDefault.use(new defaultCodecs.MultibaseBase58btc());
 
+const DEFAULT_CODEC_IDS = ['mh-sha2-256', 'mb-base58-btc'];
+
 /**
  * Encodes a hashlink. If only a `url` parameter is provided, the URL is
  * fetched, transformed, and encoded into a hashlink. If a data parameter
  * is provided, the hashlink is encoded from the data.
  *
- * @param {Object} options - The options for the encode operation.
+ * @param {object} options
  * @param {Uint8Array} options.data - The data associated with the given URL. If
  *   provided, this data is used to encode the cryptographic hash.
- * @param {Array} options.urls - One or more URLs that contain the data
- *   referred to by the hashlink.
- * @param {Array} options.codecs - One or more URLs that contain the data
- *   referred to by the hashlink.
- * @param {Object} options.meta - A set of key-value metadata that will be
+ * @param {string|Array<string>} options.url - One or more URLs that resolve to
+ *   the data referred to by the hashlink.
+ * @param {Array} [options.codecs] - One or more codecs that should be used
+ *   to encode the data.
+ * @param {object} [options.meta={}] - A set of key-value metadata that will be
  *   encoded into the hashlink.
  *
  * @returns {Promise<string>} Resolves to a string that is a hashlink.
  */
-async function encode({data, urls, url,
-  codecs = ['mh-sha2-256', 'mb-base58-btc'], meta = {}}) {
+async function encode(options) {
+  let data, url, codecs, meta;
 
-  if(url && !urls) {
-    urls = [url];
+  if(!options) {
+    throw new Error('Urls and/or data params are required.');
   }
 
-  return await hlDefault.encode({data, urls, codecs, meta});
+  if(typeof options === 'string') { // Convenience usage, `create(url)`
+    url = options;
+    codecs = DEFAULT_CODEC_IDS;
+    meta = {};
+  } else {
+    data = options.data;
+    url = options.url;
+    codecs = options.codecs || DEFAULT_CODEC_IDS;
+    meta = options.meta || {};
+  }
+
+  if(!data) {
+    // TODO: Add fetching of data from url
+    throw new Error('Fetching of data from urls not implemented.');
+  }
+
+  return hlDefault.encode({data, url, codecs, meta});
 }
 
 /**
  * Decodes a hashlink resulting in an object with key-value pairs
  * representing the values encoded in the hashlink.
  *
- * @param {Object} options - The options for the encode operation.
- * @param {string} options.hashlink - The encoded hashlink value to decode.
+ * @param {string} hashlink - The encoded hashlink value to decode.
  *
- * @returns {Object} Returns an object with the decoded hashlink values.
+ * @returns {object} Returns an object with the decoded hashlink values.
  */
 function decode({hashlink}) {
   throw new Error('Not implemented.');
@@ -66,11 +80,10 @@ function decode({hashlink}) {
 /**
  * Verifies a hashlink resulting in a simple true or false value.
  *
- * @param {Object} options - The options for the encode operation.
- * @param {string} options.hashlink - The encoded hashlink value to verify.
- * @param {Uint8Array} options.data - Optional data to use when verifying
+ * @param {string} hashlink - The encoded hashlink value to verify.
+ * @param {Uint8Array} data - Optional data to use when verifying
  *   hashlink.
- * @param {Array} options.resolvers - An array of Objects with key-value
+ * @param {Array<object>} [resolvers] - An array of Objects with key-value
  *   pairs. Each object must contain a `scheme` key associated with a
  *   Function({url, options}) that resolves any URL with the given scheme
  *   and options to data.
@@ -78,5 +91,10 @@ function decode({hashlink}) {
  * @returns {Promise<boolean>} true if the hashlink is valid, false otherwise.
  */
 async function verify({hashlink, data, resolvers}) {
+  if(!data) {
+    // TODO: Add fetching of data from url
+    throw new Error('Fetching of data from hashlink not implemented.');
+  }
+
   return hlDefault.verify({hashlink, data, resolvers});
 }
