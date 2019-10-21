@@ -93,7 +93,7 @@ function decode({hashlink}) {
 async function verify({hashlink, data, resolvers}) {
   if(!data) {
     // TODO: Add fetching of data from url
-    throw new Error('Fetching of data from hashlink coming soon.');
+    throw new Error('Fetching of data from hashlink not implemented.');
   }
 
   return hlDefault.verify({hashlink, data, resolvers});
