@@ -59,7 +59,7 @@ async function encode(options) {
 
   if(!data) {
     // TODO: Add fetching of data from url
-    throw new Error('Fetching of data from urls coming soon.');
+    throw new Error('Fetching of data from urls not implemented.');
   }
 
   return hlDefault.encode({data, url, codecs, meta});
