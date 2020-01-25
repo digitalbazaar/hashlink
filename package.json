@@ -16,8 +16,6 @@
   },
   "files": [
     "Hashlink.js",
-    "base58.js",
-    "baseN.js",
     "bin/hl",
     "codecs.js",
     "crypto-browser.js",
@@ -29,6 +27,7 @@
     "util.js"
   ],
   "dependencies": {
+    "base58-universal": "^1.0.0",
     "blakejs": "^1.1.0",
     "borc": "^2.1.1",
     "esm": "^3.2.22",

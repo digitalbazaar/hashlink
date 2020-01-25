@@ -3,7 +3,7 @@
  */
 'use strict';
 
-//import * as base58 from './base58.js';
+//import * as base58 from 'base58-universal';
 //import crypto from './crypto.js';
 import * as defaultCodecs from './codecs.js';
 import {Hashlink} from './Hashlink.js';
