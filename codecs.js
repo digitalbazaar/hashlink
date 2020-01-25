@@ -3,7 +3,7 @@
  */
 'use strict';
 
-import * as base58 from './base58.js';
+import * as base58 from 'base58-universal';
 import {blake2b} from 'blakejs';
 import crypto from './crypto.js';
 import {TextDecoder, stringToUint8Array} from './util.js';
