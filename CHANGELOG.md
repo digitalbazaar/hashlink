@@ -1,5 +1,8 @@
 # hashlink ChangeLog
 
+### Changed
+- Update dependencies.
+
 ## 0.11.0 - 2019-09-11
 
 ### Fixed
