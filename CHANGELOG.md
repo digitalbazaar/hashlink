@@ -2,6 +2,7 @@
 
 ### Changed
 - Update dependencies.
+- Use base58-universal.
 
 ## 0.11.0 - 2019-09-11
 
