@@ -21,6 +21,6 @@ module.exports = {
     /* Advanced output configuration (click to show) */
     /* Expert output configuration (on own risk) */
   },
-  devtool: 'source-map', // enum
+  devtool: 'cheap-module-source-map', // enum
   // enhance debugging by adding meta info for the browser devtools
 };
