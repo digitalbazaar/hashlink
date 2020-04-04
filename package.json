@@ -21,6 +21,7 @@
     "crypto-browser.js",
     "crypto.js",
     "dist/*.js",
+    "dist/*.map",
     "index.js",
     "main.js",
     "util-browser.js",
