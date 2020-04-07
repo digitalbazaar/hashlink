@@ -1,5 +1,7 @@
 # hashlink ChangeLog
 
+## 0.12.1 - 2020-04-06
+
 ### Fixed
 - Distribute sourcemap file.
 
