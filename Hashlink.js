@@ -113,8 +113,60 @@ export class Hashlink {
    *
    * @returns {Object} Returns an object with the decoded hashlink values.
    */
-  decode({hashlink}) {
-    throw new Error('Not implemented.');
+  async decode({hashlink}) {
+    const components = hashlink.split(':');
+    const decodedValue = {
+      hashName: 'unknown',
+      hashValue: 'unknown',
+      meta: {}
+    }
+
+    if(components.length < 2) {
+      throw new Error(`Hashlink "${hashlink}" is invalid; ` +
+        'it must contain at least one colon.');
+    }
+
+    if(components.length > 3) {
+      throw new Error(`Hashlink "${hashlink}" is invalid; ` +
+        'it contains more than two colons.');
+    }
+
+    // determine the base encoding decoder and decode the multihash value
+    const multibaseEncodedMultihash = stringToUint8Array(components[1]);
+    const multibaseDecoder = this._findDecoder(multibaseEncodedMultihash);
+    const encodedMultihash = multibaseDecoder.decode(multibaseEncodedMultihash);
+
+    // determine the multihash decoder
+    const multihashDecoder = this._findDecoder(encodedMultihash);
+
+    // decode the cryptographic hash name and value
+    const hashDecoder = this._findDecoder(encodedMultihash);
+    decodedValue.hashName = hashDecoder.name;
+    decodedValue.hashValue = await hashDecoder.decode(encodedMultihash);
+
+    // extract the metadata to discover extra codecs
+    const codecs = [];
+    if(components.length === 3) {
+      const encodedMeta = stringToUint8Array(components[2]);
+      const cborMeta = multibaseDecoder.decode(encodedMeta);
+      const meta = cbor.decode(cborMeta);
+
+      // extract metadata values
+      if(meta.has(0x0f)) {
+        decodedValue.meta.url = meta.get(0x0f);
+      }
+      if(meta.has(0x0e)) {
+        decodedValue.meta['content-type'] = meta.get(0x0e);
+      }
+      if(meta.has(0x0d)) {
+        decodedValue.meta.experimental = meta.get(0x0d);
+      }
+      if(meta.has(0x0c)) {
+        decodedValue.meta.transform = meta.get(0x0c);
+      }
+    }
+
+    return decodedValue;
   }
 
   /**

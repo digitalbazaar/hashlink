@@ -181,6 +181,46 @@ describe('hashlink library', function() {
       });
     });
 
+    describe(`decode() [sha2-256]`, function() {
+      // setup the encoder/decoder
+      const hlInstance = new Hashlink();
+      hlInstance.use(new defaultCodecs.MultihashSha2256());
+      hlInstance.use(new defaultCodecs.MultibaseBase58btc());
+
+      it('decode({hashlink}) should decode hash and metadata',
+        async function() {
+        const result = await hlInstance.decode({
+          hashlink: 'hl:zQmNbCYUrvaVfy6w9b5W3SVTP2newPK5FoeY37QurUEUydH:' +
+            'zCwPSdabLuj3jue1qYujzunnKwpL4myKdyeqySyFhnzZ8qdfW3bb6W8dVdRu'
+        });
+
+        result.hashName.should.equal('sha2-256');
+        result.hashValue.toString('hex').should.equal(
+          '03ba204e50d126e4674c005e04d82e84c21366780af1f43bd54a37816b6ab340');
+        result.meta.url[0].should.equal(exampleUrl);
+        result.meta['content-type'].should.equal('text/plain');
+      });
+    });
+
+    describe(`decode() [blake2b-64]`, function() {
+      // setup the encoder/decoder
+      const hlInstance = new Hashlink();
+      hlInstance.use(new defaultCodecs.MultihashBlake2b64());
+      hlInstance.use(new defaultCodecs.MultibaseBase58btc());
+
+      it('decode({hashlink}) should decode hash and metadata',
+        async function() {
+        const result = await hlInstance.decode({
+          hashlink: 'hl:zm9YZpCjPLPJ4Epc:' +
+            'zCwPSdabLuj3jue1qYujzunnKwpL4myKdyeqySyFhnzZ8qdfW3bb6W8dVdRu'
+        });
+
+        result.hashName.should.equal('blake2b-64');
+        result.hashValue.toString('hex').should.equal('34377f929f5defa5');
+        result.meta.url[0].should.equal(exampleUrl);
+      });
+    });
+
     describe(`verify() [sha2-256]`, function() {
       // setup the encoder/decoder
       const hlInstance = new Hashlink();

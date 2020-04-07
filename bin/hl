@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+'use strict;'
 
 const fs = require('fs-extra');
 const program = require('commander');
@@ -15,7 +16,8 @@ program
   .description('Encode a hashlink given a URL and/or data.')
   .option('-u, --url <location>', 'target URL for the hashlink', collect, [])
   .option('-l, --legacy', 'encode a hashlink for a legacy URL')
-  .option('-h, --hash <algorithm>', 'cryptographic hash algorithm', 'sha2-256')
+  .option('-a, --hash <algorithm>',
+    'cryptographic hash algorithm [sha2-256, blake2b-64]', 'sha2-256')
   .option('-b, --base <encoding>', 'base encoding', 'base58-btc')
   .action(async (dataFile, options) => {
     try {
@@ -55,6 +57,41 @@ program
     console.log('    hl encode hw.txt');
     console.log('    hl encode --url "https://example.com/hw.txt"');
     console.log('    hl encode --url "https://example.com/hw.txt" hw.txt');
+    console.log();
+  });
+
+program
+  .command('decode')
+  .alias('d')
+  .description('Decode a hashlink.')
+  .action(async (hashlink, options) => {
+    try {
+      // decode the hashlink and print its values
+      const decoded = await hl.decode({hashlink});
+      console.log(
+        `Hash [${decoded.hashName}]: ${decoded.hashValue.toString('hex')}`);
+      const metaKeys = Object.getOwnPropertyNames(decoded.meta);
+      if(metaKeys.length > 0) {
+        console.log('Metadata:');
+        metaKeys.forEach(key => {
+          let value = decoded.meta[key];
+          if(Array.isArray(value)) {
+            value = value.join(' ');
+          }
+          console.log(`  ${key}: ${value}`);
+        });
+      }
+    } catch(e) {
+      console.error(`${e}`);
+      process.exit(1);
+    }
+  })
+  .on('--help', () => {
+    console.log();
+    console.log('  Examples: ');
+    console.log();
+    console.log('    hl decode hl:zm9YZpCjPLPJ4Epc:' +
+      'z3TSgXTuaHxY2tsArhUreJ4ixgw9NW7DYuQ9QTPQyLHy');
     console.log();
   });
 
