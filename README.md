@@ -1,6 +1,6 @@
 # Javascript Cryptographic Hyperlinks Library _(hashlink)_
 
-[![NPM Version](https://img.shields.io/npm/v/hashlink.svg?style=flat-square)](https://npm.im/hashlink)
+[![NPM Version](https://img.shields.io/npm/v/hashlink.svg)](https://npm.im/hashlink)
 [![Build status](https://img.shields.io/github/workflow/status/digitalbazaar/hashlink/Node.js%20CI)](https://github.com/digitalbazaar/hashlink/actions?query=workflow%3A%22Node.js+CI%22)
 [![Coverage status](https://img.shields.io/codecov/c/github/digitalbazaar/hashlink)](https://codecov.io/gh/digitalbazaar/hashlink)
 [![Dependency Status](https://img.shields.io/david/digitalbazaar/hashlink.svg)](https://david-dm.org/digitalbazaar/hashlink)
