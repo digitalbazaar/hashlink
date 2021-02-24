@@ -113,7 +113,10 @@ export class Hashlink {
    *
    * @returns {object} Returns an object with the decoded hashlink values.
    */
-  decode({hashlink}) {
+  decode({
+    /* eslint-disable-next-line no-unused-vars */
+    hashlink
+  }) {
     throw new Error('Not implemented.');
   }
 
@@ -131,7 +134,11 @@ export class Hashlink {
    * @returns {Promise<boolean>} Return true if the hashlink is valid, false
    *   otherwise.
    */
-  async verify({data, hashlink, resolvers}) {
+  async verify({
+    data, hashlink,
+    /* eslint-disable-next-line no-unused-vars */
+    resolvers
+  }) {
     const components = hashlink.split(':');
 
     if(components.length > 3) {

@@ -59,7 +59,10 @@ async function encode({data, urls, url,
  *
  * @returns {object} Returns an object with the decoded hashlink values.
  */
-function decode({hashlink}) {
+function decode({
+  /* eslint-disable-next-line no-unused-vars */
+  hashlink
+}) {
   throw new Error('Not implemented.');
 }
 
