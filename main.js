@@ -28,14 +28,14 @@ hlDefault.use(new defaultCodecs.MultibaseBase58btc());
  * fetched, transformed, and encoded into a hashlink. If a data parameter
  * is provided, the hashlink is encoded from the data.
  *
- * @param {Object} options - The options for the encode operation.
+ * @param {object} options - The options for the encode operation.
  * @param {Uint8Array} options.data - The data associated with the given URL. If
  *   provided, this data is used to encode the cryptographic hash.
  * @param {Array} options.urls - One or more URLs that contain the data
  *   referred to by the hashlink.
  * @param {Array} options.codecs - One or more URLs that contain the data
  *   referred to by the hashlink.
- * @param {Object} options.meta - A set of key-value metadata that will be
+ * @param {object} options.meta - A set of key-value metadata that will be
  *   encoded into the hashlink.
  *
  * @returns {Promise<string>} Resolves to a string that is a hashlink.
@@ -47,17 +47,17 @@ async function encode({data, urls, url,
     urls = [url];
   }
 
-  return await hlDefault.encode({data, urls, codecs, meta});
+  return hlDefault.encode({data, urls, codecs, meta});
 }
 
 /**
  * Decodes a hashlink resulting in an object with key-value pairs
  * representing the values encoded in the hashlink.
  *
- * @param {Object} options - The options for the encode operation.
+ * @param {object} options - The options for the encode operation.
  * @param {string} options.hashlink - The encoded hashlink value to decode.
  *
- * @returns {Object} Returns an object with the decoded hashlink values.
+ * @returns {object} Returns an object with the decoded hashlink values.
  */
 function decode({hashlink}) {
   throw new Error('Not implemented.');
@@ -66,7 +66,7 @@ function decode({hashlink}) {
 /**
  * Verifies a hashlink resulting in a simple true or false value.
  *
- * @param {Object} options - The options for the encode operation.
+ * @param {object} options - The options for the encode operation.
  * @param {string} options.hashlink - The encoded hashlink value to verify.
  * @param {Uint8Array} options.data - Optional data to use when verifying
  *   hashlink.
@@ -75,7 +75,8 @@ function decode({hashlink}) {
  *   Function({url, options}) that resolves any URL with the given scheme
  *   and options to data.
  *
- * @returns {Promise<boolean>} true if the hashlink is valid, false otherwise.
+ * @returns {Promise<boolean>} Return true if the hashlink is valid, false
+ *   otherwise.
  */
 async function verify({hashlink, data, resolvers}) {
   return hlDefault.verify({hashlink, data, resolvers});
